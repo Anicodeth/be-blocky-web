@@ -3,26 +3,37 @@ import { PageHeader } from "./page-header";
 import { Student } from "@/types";
 import { EmptyPlaceholder } from "./empty-placehoder";
 import { AddChildModal } from "./dialogs/add-child-modal";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { ChevronLeft, ChevronRight, Edit2, Edit3, Plus, PlusCircle } from "lucide-react";
+import { Button } from "./ui/button";
+import { StudentCard } from "./student-card";
 
 interface Props {
     students: Student[]
 }
 
 export function ParentDashboard({ students }: Props) {
+
     return (
         <div>
             <PageHeader
                 title="Welcome back"
                 description={getDateString()}
             />
-            <div className=" py-4">
-                <h2 className=" font-heading text-3xl">
+            <div className=" py-4 flex items-center justify-between">
+                <h2 className=" font-heading text-xl lg:text-3xl">
                     Children
                 </h2>
+                <AddChildModal another />
             </div>
             {
                 students.length ?
                     <div>
+                        {
+                            students.map(student => (
+                                <StudentCard student={student} key={student.name} />
+                            ))
+                        }
                     </div>
                     : <EmptyPlaceholder>
                         <EmptyPlaceholder.Icon name="Student" />

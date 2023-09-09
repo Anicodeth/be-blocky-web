@@ -26,10 +26,13 @@ export async function getStudents() {
                 ({ ...doc.data() } as Student)
             );
             return {
-                student: students
+                student: students,
+                role: user.role
             }
         }
-        return null
+        return {
+            role: user.role
+        }
     }
     throw ("User Doesn't Exist")
 }

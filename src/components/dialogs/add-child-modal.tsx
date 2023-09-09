@@ -18,15 +18,17 @@ import { FirebaseApp } from "firebase/app";
 import { useAuthContext } from "../context/auth-context";
 import { toast } from "../ui/use-toast";
 import useGetFullUser from "@/hooks/use-full-user";
+import { createChild } from "@/actions/children";
+import { PlusCircle } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-viewport";
 
 const db = getFirestore(firebase_app as FirebaseApp)
 
 interface Props {
-    id: string,
-    is_parent: boolean
+    another?: boolean
 }
 
-export function AddChildModal() {
+export function AddChildModal({ another }: Props) {
     const { user } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const form = useForm<AddChildSchema>({
@@ -34,27 +36,12 @@ export function AddChildModal() {
     })
     const [open, setOpen] = useState(false)
     const { userAccountData } = useGetFullUser()
+    const isMobile = useIsMobile()
     async function onSubmit(data: AddChildSchema) {
         setIsLoading(true)
         const className = userAccountData?.role === "parent" ? "Class A" : "Students"
         try {
-            await createUserWithEmailAndPassword(auth, data.email, data.password).then(async ({ user: createdUser }) => {
-                await updateProfile(createdUser, { displayName: data.name });
-                await setDoc(doc(db, "users", createdUser.uid), {
-                    uid: createdUser.uid,
-                    email: createdUser.email,
-                    name: data.name,
-                    role: "Student",
-                    credit: 0,
-                    parentId: user?.uid
-                })
-            });
-            await addDoc(collection(db, "School", user!.uid, "Classes", className, "Students"), {
-                name: data.name,
-                email: data.email,
-                password: data.password,
-                parentId: user?.uid
-            });
+            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, className })
             setIsLoading(false)
             setOpen(false)
             toast({
@@ -72,9 +59,14 @@ export function AddChildModal() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>
-                    Add Child
-                </Button>
+                {
+                    another ? <Button className=" flex items-center gap-2" size={isMobile ? "sm" : "default"} variant="secondary">
+                        <PlusCircle size={16} />
+                        Add Another Child
+                    </Button> : <Button>
+                        Add Child
+                    </Button>
+                }
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
@@ -132,7 +124,7 @@ export function AddChildModal() {
                         />
                         <Button className=" w-full text-lg mt-4" type="submit" disabled={isLoading}>
                             {
-                                isLoading ? <Loading /> : "Sign Up"
+                                isLoading ? <Loading /> : "Add Child"
                             }
                         </Button>
                     </form>

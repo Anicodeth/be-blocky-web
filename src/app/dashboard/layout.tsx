@@ -40,8 +40,7 @@ export default function layout({ children }: Props) {
                     icon: "Settings"
                 }]} />
             </aside>
-            <main className=" col-span-4 bg-white rounded-l-3xl p-8 px-16">
-
+            <main className=" col-span-4 bg-white rounded-l-3xl md:p-8 md:px-16 p-4">
                 {children}
             </main>
         </main>

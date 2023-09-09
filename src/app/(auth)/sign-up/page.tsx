@@ -1,10 +1,10 @@
 "use client"
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { ExternalLink, School2, User, Users } from "lucide-react";
+import { School2, User, Users } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SignUpSchema, signUpSchema } from "@/lib/schema/auth";
@@ -102,12 +102,12 @@ export default function page() {
                                                         School
                                                     </div>
                                                 </SelectItem>
-                                                <SelectItem value="student">
+                                                {/* <SelectItem value="student">
                                                     <div className="flex items-center gap-2">
                                                         <User size={18} />
                                                         Student
                                                     </div>
-                                                </SelectItem>
+                                                </SelectItem> */}
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -115,72 +115,76 @@ export default function page() {
                             </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input {...field} placeholder="Full Name" className=" h-10" />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input {...field} placeholder="Email" className=" h-10" />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input {...field} onChange={(e) => {
-                                        field.onChange(e)
-                                    }} placeholder="Password" type="password" className=" h-10" />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="repeatPassword"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormControl>
-                                    <Input {...field} placeholder="Repeat Password" type="password" className=" h-10" />
-                                </FormControl>
-                            </FormItem>
-                        )}
-                    />
 
-                    <FormField
-                        control={form.control}
-                        name="terms"
-                        render={({ field }) => (
-                            <FormItem className="flex items-center space-x-2">
-                                <FormControl>
-                                    <Checkbox className="data-[state=checked]:bg-ecstasy border-none bg-gray-300" checked={field.value} onCheckedChange={field.onChange} name="terms" id="terms" />
-                                </FormControl>
-                                <FormLabel htmlFor="terms">
-                                    <label
-                                        htmlFor="terms"
-                                        className="text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 align-super"
-                                    >
-                                        I agree to the terms and conditions
-                                    </label>
-                                </FormLabel>
-                            </FormItem>
-                        )}
-                    />
+                    <>
+                        <FormField
+                            control={form.control}
+                            name="name"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input {...field} placeholder="Full Name" className=" h-10" />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input {...field} placeholder="Email" className=" h-10" />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input {...field} onChange={(e) => {
+                                            field.onChange(e)
+                                        }} placeholder="Password" type="password" className=" h-10" />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="repeatPassword"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormControl>
+                                        <Input {...field} placeholder="Repeat Password" type="password" className=" h-10" />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="terms"
+                            render={({ field }) => (
+                                <FormItem className="flex items-center space-x-2">
+                                    <FormControl>
+                                        <Checkbox className="data-[state=checked]:bg-ecstasy border-none bg-gray-300" checked={field.value} onCheckedChange={field.onChange} name="terms" id="terms" />
+                                    </FormControl>
+                                    <FormLabel htmlFor="terms">
+                                        <label
+                                            htmlFor="terms"
+                                            className="text-xs leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 align-super"
+                                        >
+                                            I agree to the terms and conditions
+                                        </label>
+                                    </FormLabel>
+                                </FormItem>
+                            )}
+                        />
+                    </>
+
                     <Button className=" w-full text-lg mt-4" size="lg" type="submit" disabled={isSignUpLoading}>
                         {
                             isSignUpLoading ? <Loading /> : "Sign Up"
