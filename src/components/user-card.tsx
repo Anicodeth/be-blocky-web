@@ -11,6 +11,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase/firebase-auth";
 import { Label } from "./ui/label";
 import useGetFullUser from "@/hooks/use-full-user";
+import { UserAvatar } from "./user-avatar";
 
 export const UserButton: React.FC = () => {
     const { user } = useAuthContext();
@@ -28,15 +29,7 @@ export const UserButton: React.FC = () => {
     return (
         <div className="absolute inset-x-0 pt-4 bottom-0 flex items-center  border-t border-orange-400 gap-4 px-6 py-3 hover:cursor-pointer">
             <div className=" flex flex-col items-center gap-2">
-                <Avatar className="w-16 h-16">
-                    {user?.photoURL ? (
-                        <AvatarImage src={user.photoURL} alt={user.displayName ?? "Profile picture"} />
-                    ) : null}
-                    <AvatarFallback className="flex items-center justify-center w-16 h-16 overflow-hidden border border-orange-400 text-gray-700 bg-gray-100 rounded-full">
-                        {(user?.displayName ?? "U").slice(0, 2).toUpperCase()}
-                    </AvatarFallback>
-
-                </Avatar>
+                <UserAvatar className=" w-16 h-16" />
                 <Badge className=" font-bold" variant={
                     userData?.subscription === "Gold" ? "default" : userData?.subscription === "Premium" ? "secondary" : userData?.subscription === "Standard" ? "outline" : "outline"
                 }>

@@ -11,8 +11,8 @@ import { useIsMobile } from "@/hooks/use-viewport";
 export function StudentCard({ student }: { student: Student }) {
     const isMobile = useIsMobile()
     return (
-        <Card className=" border border-green-400 rounded-2xl shadow-sm shadow-green-600/40 lg:w-1/4">
-            <CardHeader className=" text-white p-6 bg-gradient-to-tr from-lime-600 to-lime-400 rounded-t-2xl">
+        <Card className="rounded-2xl lg:w-1/4">
+            <CardHeader className=" text-white p-6 bg-gradient-to-tr from-lime-600 to-lime-500 rounded-t-2xl">
                 <div className=" border-b pb-2">
                     <p className=" font-medium text-sm">
                         Child
@@ -22,7 +22,7 @@ export function StudentCard({ student }: { student: Student }) {
                     <p className="font-medium pt-4">
                         {student.name}
                     </p>
-                    <Edit3 size={16} />
+                    <Edit3 size={16} className="cursor-pointer" />
                 </div>
             </CardHeader>
             <CardContent>
@@ -30,7 +30,7 @@ export function StudentCard({ student }: { student: Student }) {
                     <p className=" text-sm font-bold">
                         Course
                     </p>
-                    <div className=" flex items-center gap-2 text-green-700 font-semibold text-xs bg-green-100 p-1 px-2">
+                    <div role="button" className=" flex items-center gap-2 text-green-700 font-semibold text-xs bg-green-100 p-1 px-2">
                         <Plus size={12} />
                         Add
                     </div>

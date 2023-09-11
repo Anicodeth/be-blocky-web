@@ -1,7 +1,5 @@
-import { PageHeader } from "@/components/page-header";
+import { MobileNav } from "@/components/mobile-nav";
 import { SideBar } from "@/components/side-bar";
-import { getDateString } from "@/lib/utils";
-import { Home } from "lucide-react";
 import { ReactNode } from "react";
 
 
@@ -41,6 +39,7 @@ export default function layout({ children }: Props) {
                 }]} />
             </aside>
             <main className=" col-span-4 bg-white rounded-l-3xl md:p-8 md:px-16 p-4">
+                <MobileNav />
                 {children}
             </main>
         </main>

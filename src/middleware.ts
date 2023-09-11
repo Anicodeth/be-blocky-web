@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { siteConfig } from "./config/site-config";
 
 export async function middleware(request: NextRequest, response: NextResponse) {
     const session = request.cookies.get("session");
