@@ -16,7 +16,6 @@ import { useRouter } from "next/navigation"
 
 
 export function MobileNav() {
-    const { user } = useAuthContext()
     const { userData } = useUserSubscription()
     const { userAccountData } = useGetFullUser()
     const router = useRouter()
@@ -30,9 +29,9 @@ export function MobileNav() {
     }
 
     return (
-        <div>
+        <div className="md:hidden">
             <div className=" flex items-center justify-between mb-4">
-                <div className=" flex items-center gap-2">
+                <div className=" flex items-center gap-2" >
                     <Menu className=" text-brand-orange" />
                     <Image
                         src={Logo}

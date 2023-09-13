@@ -21,7 +21,6 @@ const useGetFullUser = () => {
 
                 try {
                     const docSnap = await getDoc(userRef);
-
                     if (docSnap.exists()) {
                         const data = docSnap.data();
                         setUserAccountData(data as UserAccountData);
@@ -34,7 +33,6 @@ const useGetFullUser = () => {
                     setLoading(false);
                 }
             };
-
             fetchUserAccountData();
         } else {
             setLoading(false);

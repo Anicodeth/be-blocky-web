@@ -67,6 +67,12 @@ export default function page() {
                 });
             })
         } catch (error: any) {
+            if (error.message?.includes("auth/email-already-in-user")) {
+                toast({
+                    title: "There is already a user registered with this email.",
+                    variant: "destructive"
+                })
+            }
             toast({
                 title: error?.message ?? "Error happened creating your account. Please try again!",
                 variant: "destructive"

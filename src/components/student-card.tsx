@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { Button } from "./ui/button";
 import { Student } from "@/types";
 import { useIsMobile } from "@/hooks/use-viewport";
+import { EditChildModal } from "./dialogs/edit-child-modal";
 
 
 
@@ -22,7 +23,7 @@ export function StudentCard({ student }: { student: Student }) {
                     <p className="font-medium pt-4">
                         {student.name}
                     </p>
-                    <Edit3 size={16} className="cursor-pointer" />
+                    <EditChildModal />
                 </div>
             </CardHeader>
             <CardContent>

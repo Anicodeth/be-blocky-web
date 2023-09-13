@@ -31,9 +31,9 @@ export const UserButton: React.FC = () => {
             <div className=" flex flex-col items-center gap-2">
                 <UserAvatar className=" w-16 h-16" />
                 <Badge className=" font-bold" variant={
-                    userData?.subscription === "Gold" ? "default" : userData?.subscription === "Premium" ? "secondary" : userData?.subscription === "Standard" ? "outline" : "outline"
+                    userData?.subscription === "Gold" ? "default" : userData?.subscription === "Premium" ? "default" : userData?.subscription === "Standard" ? "secondary" : "outline"
                 }>
-                    {userData?.subscription}
+                    {userData?.subscription ?? "Free"}
                 </Badge>
             </div>
             <div className=" flex flex-col gap-2">
@@ -44,9 +44,7 @@ export const UserButton: React.FC = () => {
                             <Label className=" font-medium">
                                 {userAccountData?.role}
                             </Label>
-
                         </div>
-
                     </div>
 
                 </div>

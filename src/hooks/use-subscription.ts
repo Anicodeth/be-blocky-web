@@ -18,12 +18,10 @@ const useUserSubscription = () => {
     const { user } = useAuthContext();
     const [userData, setUserData] = useState<UserSubscriptionData | null | undefined>();
     const [isLoading, setLoading] = useState(true);
-    const { isLoading: userAccountDataLoading, userAccountData } = useGetFullUser()
+    const { userAccountData } = useGetFullUser()
 
     useEffect(() => {
-
         if (user && userAccountData) {
-            console.log("here at least")
             const fetchUserSubscription = async () => {
                 const userId = userAccountData.role === "Student" ? userAccountData.parentId : user.uid;
                 const db = getFirestore(firebase_app as FirebaseApp);
@@ -31,7 +29,6 @@ const useUserSubscription = () => {
                 try {
                     const docSnap = await getDoc(userSubscriptionsRef);
                     if (docSnap.exists()) {
-                        console.log("Exists")
                         const data = docSnap.data();
                         const userFetchedData: UserSubscriptionData = {
                             email: data.email,

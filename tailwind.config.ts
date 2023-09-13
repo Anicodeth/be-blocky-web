@@ -59,8 +59,20 @@ module.exports = {
           foreground: "hsl(var(--card-foreground))",
         },
         brand: {
+          primary: {
+            200: "#FFE9D8",
+            400: "#FFD4B0",
+            600: "#FFBE88",
+            800: "#FFA95E",
+          },
+          secondary: {
+            200: "#E8D6FF",
+            400: "#D2ADFF",
+            600: "#BA84FF",
+            800: "#A359FF"
+          },
           green: "#68b946",
-          orange: "#f57c14",
+          orange: "#FFA95E",
           "light-green": "#e5f3df"
         },
         apple: { DEFAULT: '#68B945', 50: '#D4EBCA', 100: '#C8E6BB', 200: '#B0DB9E', 300: '#98D080', 400: '#80C562', 500: '#68B945', 600: '#519036', 700: '#3A6727', 800: '#233E17', 900: '#0C1608', 950: '#010100' },

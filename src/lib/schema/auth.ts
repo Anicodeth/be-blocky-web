@@ -11,7 +11,6 @@ export const signUpSchema = z.object({
     email: z.string({ required_error: "Please provide valid email address!" }).email("Please provide valid email address!"),
     password: z.string({ required_error: "Please provide password!" }).refine(pass => pass.length >= 8, "Password is less than 8 characters"),
     repeatPassword: z.string({ required_error: "Please provide repeated password!" }),
-    plan: z.string({ required_error: "Please select one of the plans!" }),
     terms: z.boolean({ required_error: "Please accept terms and conditions before signing up." }).refine(accept => accept, "Please accept terms and conditions before signing up.")
 }).refine(args => args.password === args.repeatPassword, "Password doesn't match!")
 
@@ -22,7 +21,14 @@ export const addChildSchema = z.object({
     repeatPassword: z.string({ required_error: "Please provide repeated password!" }),
 }).refine(args => args.password === args.repeatPassword, "Password doesn't match!")
 
+export const editChildSchema = ({ name, email }: { name: string, email: string }) => z.object({
+    name: z.string({ required_error: "Please provide valid name" }).default(name),
+    email: z.string({ required_error: "Please provide valid email address!" }).email("Please provide valid email address!").default(email),
+    password: z.string().refine(pass => pass.length >= 4, "Password is less than 4 characters").optional(),
+})
+
 
 export type SignUpSchema = z.infer<typeof signUpSchema>
 export type SignInSchema = z.infer<typeof signInSchema>
 export type AddChildSchema = z.infer<typeof addChildSchema>
+export type EditChildSchema = z.infer<ReturnType<typeof editChildSchema>>

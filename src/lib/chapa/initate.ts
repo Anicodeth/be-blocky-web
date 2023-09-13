@@ -6,6 +6,8 @@ import axios from "axios"
 import { FirebaseApp } from "firebase/app"
 import { collection, doc, getDoc, getFirestore, query, setDoc, where } from "firebase/firestore"
 import { nanoid } from "nanoid"
+import { Plan, plans } from "./plans"
+import { addSubscription } from "@/actions/subscription"
 
 
 
@@ -27,18 +29,8 @@ export interface ChapaResponse {
     data: CheckoutWrapper
 }
 
-export const subscriptionPlans: { [key: number]: string } = {
-    0: "Free",
-    1000: "Standard",
-    2_500: "Gold",
-    5_000: "Premium",
-    10_000: "Standard Yearly",
-    25_000: "Gold Yearly",
-    50_000: "Premium Yearly"
-}
 
-
-export const makePayment = async (paymentData: UserPaymentData, userId: string) => {
+export const makePayment = async (paymentData: UserPaymentData, userId: string, plan: Plan, yearly: boolean) => {
     const txRef = "TX-" + nanoid();
     const realPaymentData: PaymentData = {
         ...paymentData,
@@ -50,17 +42,15 @@ export const makePayment = async (paymentData: UserPaymentData, userId: string) 
     }
     try {
         const res = await axios.post("/api/chapa-payment/", realPaymentData).then(res => res.data)
-        const firestore = getFirestore(firebase_app as FirebaseApp);
-
-        const userSubscriptionsRef = doc(firestore, "UserSubscriptions", userId);
-        await setDoc(userSubscriptionsRef, {
-            uid: userId,
-            subscription: subscriptionPlans[paymentData.amount],
-            tx_ref: realPaymentData.tx_ref,
-            email: paymentData.email,
-            verified: false,
-            expiry_date: subscriptionPlans[paymentData.amount]!.includes("Yearly") ? new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
-        });
+        await addSubscription({
+            userId,
+            plan,
+            yearly,
+            paymentInfo: {
+                txRef,
+                email: paymentData.email
+            }
+        })
         return res.response.data.checkout_url as string
     } catch (e: any) {
         toast({
