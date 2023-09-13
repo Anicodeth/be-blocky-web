@@ -22,7 +22,7 @@ export default function layout({ children }: Props) {
                     icon: "Progress"
                 }, {
                     title: "Courses",
-                    href: "/courses",
+                    href: "/dashboard/courses",
                     icon: "Courses"
                 }, {
                     title: "Upgrade Plan",
