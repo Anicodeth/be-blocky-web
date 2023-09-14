@@ -16,14 +16,14 @@ export function SchoolDashboard({ classrooms }: { classrooms: Classroom[] }) {
     return (
         <div>
             <PageHeader title="Welcome Back" description={getDateString()} />
-            <div className="my-4">
+            <div className="my-4 flex flex-col">
                 <Tabs aria-label="Options" size="lg" variant="solid" radius="full" classNames={{
                     ...tabStyle,
                     base: "flex flex-col items-center"
                 }}>
-                    <Tab key="student" title="Students">
-                        <div className=" flex justify-between items-center border-y">
-                            <SearchBar className=" flex-grow" />
+                    <Tab key="student" title="Students" className=" flex md:items-center flex-col md:flex-row">
+                        <div className=" w-full md:gap-4 md:space-y-0 space-y-2 md:flex items-center justify-between">
+                            <SearchBar className=" p-0 flex-grow" />
                             <AddChildModal isSchool />
                         </div>
                     </Tab>

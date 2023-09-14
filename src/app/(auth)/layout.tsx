@@ -18,9 +18,7 @@ export default function authLayout({ children }: Props) {
                 <Image
                     src={Logo}
                     alt="Beblocky logo"
-                    className=" p-4"
-                    width={200}
-                    height={200}
+                    className=" p-4 h-20 w-44"
                 />
                 <div className="flex flex-col justify-center items-center mt-10 mb-6">
                     <h2 className="lg:text-7xl text-2xl font-bold font-heading tracking-tight mb-4 text-ecstasy">Hi, there!</h2>
@@ -29,7 +27,7 @@ export default function authLayout({ children }: Props) {
                     </p>
                 </div>
                 <div className=" flex items-center justify-center">
-                    <div className="flex flex-col w-max">
+                    <div className="flex flex-col w-full px-4 md:px-24 2xl:px-36">
                         <Tabs aria-label="Options" size="lg" selectedKey={pathname} variant="solid" radius="full" classNames={tabStyle} onSelectionChange={(key) => {
                             router.push(key.toString())
                         }}>

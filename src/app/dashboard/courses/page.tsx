@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge";
 import Logo from "../../../../public/assets/images/logo.png"
+import { PageHeader } from "@/components/page-header";
 
 export default function CoursesRoute() {
     return (
@@ -20,13 +21,7 @@ export default function CoursesRoute() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div className="container grid items-center gap-2 pb-4 pt-2 md:py-5 text-dark-ebony">
-                <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-4xl text-ecstasy">
-                    Courses
-                </h1>
-                <p className="text-dark-ebony">
-                    Discover and select your preferred course of interest.
-                </p>
-                <hr className="w-full border-gray-300 mb-4" />
+                <PageHeader title="Courses" description=" Discover and select your preferred course of interest." />
                 <h2 className="text-2xl font-bold tracking-tight">Most Popular Courses</h2>
                 <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-3 grid-cols-1 items-center gap-4 pb-4 pt-2">
                     <Card className="text-dark-ebony">

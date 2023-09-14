@@ -12,7 +12,7 @@ interface Props {
     items: SidebarNavItem[]
 }
 
-type SidebarNavItem = {
+export type SidebarNavItem = {
     title: string,
     label?: string
     href: string

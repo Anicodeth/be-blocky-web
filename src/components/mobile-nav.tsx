@@ -12,14 +12,24 @@ import useGetFullUser from "@/hooks/use-full-user"
 import { Button } from "./ui/button"
 import { signOut } from "firebase/auth"
 import { auth } from "@/lib/firebase/firebase-auth"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { useState } from "react"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet"
+import { SidebarNavItem } from "./side-bar"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
+import { Icons } from "./icons"
 
 
-export function MobileNav() {
+export function MobileNav({ items }: { items: SidebarNavItem[] }) {
     const { userData } = useUserSubscription()
     const { userAccountData } = useGetFullUser()
     const router = useRouter()
-
+    const [open, setOpen] = useState()
+    const path = usePathname()
+    const checkActive = (item: SidebarNavItem) => {
+        return item.useInclude ? path?.includes(item.href ?? "") : path === item.href;
+    };
     async function signOutUser() {
         await signOut(auth);
         await fetch("/api/sign-out", {
@@ -32,14 +42,58 @@ export function MobileNav() {
         <div className="md:hidden">
             <div className=" flex items-center justify-between mb-4">
                 <div className=" flex items-center gap-2" >
-                    <Menu className=" text-brand-orange" />
+                    <Sheet>
+                        <SheetTrigger>
+                            <Menu className=" text-brand-orange" />
+                        </SheetTrigger>
+                        <SheetContent>
+                            <SheetHeader>
+                                <SheetTitle>
+                                    <Image
+                                        src={Logo}
+                                        alt="Beblocky logo"
+                                        className="h-8 w-20 py-4"
+                                        width={180}
+                                        height={180}
+                                    />
+                                </SheetTitle>
+                                <SheetDescription>
+                                    {
+                                        items.map(item => {
+                                            const Icon = Icons[item.icon]
+                                            return (
+                                                (
+                                                    <Link href={item.href} >
+                                                        <span
+                                                            className={cn(
+                                                                " hover:text-accent-foreground transition-all duration-250 group flex items-center  py-2 text-sm font-medium",
+                                                                checkActive(item) ? " border-r-5 border-brand-orange" : " opacity-50 transparent hover:border-r-5 hover:border-brand-orange/60",
+                                                                item.disabled && "cursor-not-allowed opacity-80",
+                                                            )}
+                                                        >
+                                                            <Icon className="mr-2 h-6 w-6" />
+                                                            <span className=" text-xl">{item.title}</span>
+                                                            {item.label && (
+                                                                <span className=" ml-auto bg-gradient-to-tr from-purple-800 to-stone-800 bg-clip-text text-xs text-transparent dark:from-purple-300 dark:to-stone-200">
+                                                                    {item.label}
+                                                                </span>
+                                                            )}
+                                                        </span>
+                                                    </Link>
+                                                )
+                                            )
+                                        })
+                                    }
+                                </SheetDescription>
+                            </SheetHeader>
+                        </SheetContent>
+                    </Sheet>
                     <Image
                         src={Logo}
                         alt="Beblocky logo"
                         width={90}
                         height={90}
                     />
-
                 </div>
                 <DropdownMenu>
                     <DropdownMenuTrigger>
@@ -71,7 +125,6 @@ export function MobileNav() {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-
         </div>
     )
 }

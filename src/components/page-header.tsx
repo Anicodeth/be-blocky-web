@@ -7,8 +7,8 @@ interface Props {
 
 export function PageHeader({ title, description }: Props) {
     return (
-        <div className=" border-b pb-6 border-orange-500/60">
-            <h2 className=" text-brand-orange text-xl lg:text-4xl font-bold">
+        <div className=" border-b pb-6">
+            <h2 className="text-ecstasy text-xl lg:text-4xl font-bold">
                 {title}
             </h2>
             <Label>

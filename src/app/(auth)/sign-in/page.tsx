@@ -9,6 +9,7 @@ import { auth } from "@/lib/firebase/firebase-auth";
 import { SignInSchema, signInSchema } from "@/lib/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRedirectResult, signInWithEmailAndPassword } from "firebase/auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -80,9 +81,11 @@ export default function page() {
                     </Button>
                 </form>
             </Form>
-            <p className=" text-center mt-4 font-medium cursor-pointer hover:underline transition-all duration-300">
-                Forgot Password?
-            </p>
+            {/* <Link href="/forgot-password">
+                <p className="text-center text-orange-900 mt-4 text-sm font-semibold cursor-pointer hover:underline transition-all duration-300">
+                    Forgot Password?
+                </p>
+            </Link> */}
         </div>
     )
 }
