@@ -19,41 +19,46 @@ import { useAuthContext } from "../context/auth-context";
 import { toast } from "../ui/use-toast";
 import useGetFullUser from "@/hooks/use-full-user";
 import { createChild, createStudent, getUserByEmail } from "@/actions/student";
-import { PlusCircle } from "lucide-react";
+import { CheckIcon, PlusCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-viewport";
 import { Label } from "../ui/label";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
+import { cn } from "@/lib/utils";
 
 const db = getFirestore(firebase_app as FirebaseApp)
 
 interface Props {
     another?: boolean
+    isSchool?: boolean
 }
 
-export function AddChildModal({ another }: Props) {
+export function AddChildModal({ another, isSchool }: Props) {
     const [open, setOpen] = useState(false)
     const isMobile = useIsMobile()
     const [accountType, setAccountType] = useState<"new" | "existing">()
+    const name = isSchool ? "Student" : "Child"
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 {
                     another ? <Button className=" flex items-center gap-2" size={isMobile ? "sm" : "default"} variant="secondary">
                         <PlusCircle size={16} />
-                        Add Another Child
+                        Add Another {isSchool ? "Student" : "Child"}
                     </Button> : <Button>
-                        Add Child
+                        Add {name}
                     </Button>
                 }
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Add Child</DialogTitle>
-                    <DialogDescription>Let's crate an account for your child.
+                    <DialogTitle>Add {name}</DialogTitle>
+                    <DialogDescription>Let's crate an account for your {name.toLowerCase()}.
                     </DialogDescription>
                 </DialogHeader>
                 <DialogDescription className=" space-y-2">
                     <DialogTitle>
-                        Do your child already have an account?
+                        Do your {name.toLowerCase()} already have an account?
                     </DialogTitle>
                     <div className=" flex gap-2 items-center mt-2">
                         <Button variant={accountType === "existing" ? "default" : "outline"} onClick={() => setAccountType("existing")}>
@@ -78,6 +83,7 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
     const [foundUser, setFoundUser] = useState<User>()
     const { userAccountData } = useGetFullUser()
     const { user } = useAuthContext()
+    const name = userAccountData?.role === "school" ? "Student" : "Child"
     async function onSubmit(e: FormEvent) {
         e.preventDefault()
         try {
@@ -121,8 +127,8 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
             setIsLoading(false)
             setOpen(false)
             toast({
-                title: "Child Added Successfully!",
-                description: "A child is added successfully they can login with the provided credential to access courses now!"
+                title: `${name} Added Successfully!`,
+                description: `A ${name.toLowerCase()} is added successfully they can login with the provided credential to access courses now!`
             })
         } catch (error: any) {
             setIsLoading(false)
@@ -141,7 +147,7 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
                             Registered Email
                         </Label>
                         <Label className=" text-xs text-stone-700">
-                            Email address linked with your child account
+                            Email address linked with your {name.toLowerCase()} account
                         </Label>
                     </> : null
                 }
@@ -157,7 +163,7 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
                     </Button>
                 }
                 {
-                    foundUser ? <Button variant="link" size="sm" className="underline" onClick={() => setFoundUser(undefined)}>Find Another Child</Button> : null
+                    foundUser ? <Button variant="link" size="sm" className="underline" onClick={() => setFoundUser(undefined)}>Find Another {name}</Button> : null
                 }
             </form>
         </div>
@@ -168,9 +174,11 @@ export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void })
     const { user } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const { userAccountData } = useGetFullUser()
+    const isParent = userAccountData?.role === "parent"
     const form = useForm<AddChildSchema>({
         resolver: zodResolver(addChildSchema)
     })
+    const classrooms = [{ name: "Class A", uid: "classA" }, { name: "Class B", uid: "classB" }]
     async function onSubmit(data: AddChildSchema) {
         setIsLoading(true)
         const className = userAccountData?.role === "parent" ? "Class A" : "Students"
@@ -239,9 +247,57 @@ export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void })
                         </FormItem>
                     )}
                 />
+
+                <FormField
+                    control={form.control}
+                    name="classroom"
+                    render={({ field }) => {
+                        return (
+                            <FormItem className=" w-full">
+                                <FormControl>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                role="combobox"
+                                                className="justify-between"
+                                                aria-expanded={true}
+                                            >
+                                                {form.getValues("classroom")?.length ? form.getValues("classroom") : "Select Classroom"}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="p-0 min-w-full">
+                                            <Command>
+                                                <CommandInput placeholder="Search classroom..." className="h-9" />
+                                                <CommandEmpty>No classroom found.</CommandEmpty>
+                                                <CommandGroup>
+                                                    {classrooms.map((classroom) => (
+                                                        <CommandItem
+                                                            key={classroom.name}
+                                                            onSelect={(currentValue) => form.setValue("classroom", currentValue === form.getValues("classroom") ? "" : currentValue)}
+                                                            className="cursor-pointer"
+                                                        >
+                                                            {classroom.name}
+                                                            <CheckIcon
+                                                                className={cn(
+                                                                    "ml-auto h-4 w-4",
+                                                                    form.getValues("classroom") === classroom.uid ? "opacity-100" : "opacity-0"
+                                                                )}
+                                                            />
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </Command>
+                                        </PopoverContent>
+                                    </Popover>
+                                </FormControl>
+                            </FormItem>
+                        )
+                    }}
+                />
                 <Button className=" w-full mt-4" type="submit" disabled={isLoading}>
                     {
-                        isLoading ? <Loading /> : "Add Child"
+                        isLoading ? <Loading /> : isParent ? "Add Child" : "Add Student"
                     }
                 </Button>
             </form>

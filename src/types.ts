@@ -22,3 +22,13 @@ export interface User {
 export interface Student {
     name: string;
 }
+
+
+export interface Classroom {
+    name: string
+}
+
+export interface School {
+    name: string
+    uid: string
+}

@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import firebase_app from '@/lib/firebase/firebase-client';
 import { collection, doc, getDoc, getDocs, getFirestore } from 'firebase/firestore';
-import { Student, User } from '@/types';
+import { School, Student, User } from '@/types';
 import { auth } from 'firebase-admin';
 
-export async function getStudents() {
+export async function getDashboardData() {
     const session = cookies().get("session")?.value || "";
     if (!session) {
         throw ("Session not found")
@@ -27,6 +27,22 @@ export async function getStudents() {
             );
             return {
                 student: students,
+                role: user.role
+            }
+        }
+        if (user.role === "school") {
+            const schoolRef = collection(db, "School");
+            const schoolSnap = await getDocs(schoolRef);
+            let data: School[] = []
+            schoolSnap.forEach(doc => {
+                if (doc.exists()) {
+                    if (doc.data().uid === uid) {
+                        data.push(doc.data() as School)
+                    }
+                }
+            })
+            console.log(data)
+            return {
                 role: user.role
             }
         }

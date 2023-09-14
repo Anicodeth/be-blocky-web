@@ -17,6 +17,7 @@ export const signUpSchema = z.object({
 export const addChildSchema = z.object({
     name: z.string({ required_error: "Please provide valid name!" }).refine(name => name.includes(" "), "Please provide full name."),
     email: z.string({ required_error: "Please provide valid email address!" }).email("Please provide valid email address!"),
+    classroom: z.string().optional(),
     password: z.string({ required_error: "Please provide password!" }).refine(pass => pass.length >= 8, "Password is less than 8 characters"),
     repeatPassword: z.string({ required_error: "Please provide repeated password!" }),
 }).refine(args => args.password === args.repeatPassword, "Password doesn't match!")

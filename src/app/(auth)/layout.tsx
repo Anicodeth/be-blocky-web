@@ -5,6 +5,7 @@ import Banner from "../../../public/assets/images/default-register.png"
 import Logo from "../../../public/assets/images/logo.png"
 import { Tabs, Tab } from "@nextui-org/react"
 import { usePathname, useRouter } from "next/navigation"
+import { tabStyle } from "@/lib/style"
 interface Props {
     children: ReactNode
 }
@@ -29,10 +30,7 @@ export default function authLayout({ children }: Props) {
                 </div>
                 <div className=" flex items-center justify-center">
                     <div className="flex flex-col w-max">
-                        <Tabs aria-label="Options" size="lg" selectedKey={pathname} variant="solid" radius="full" classNames={{
-                            tabList: "bg-brand-green rounded-full w-[480px]",
-                            tabContent: "group-data-[selected=true]:text-[#68b946] text-[#ffffff] font-bold text-xl px-10",
-                        }} onSelectionChange={(key) => {
+                        <Tabs aria-label="Options" size="lg" selectedKey={pathname} variant="solid" radius="full" classNames={tabStyle} onSelectionChange={(key) => {
                             router.push(key.toString())
                         }}>
                             <Tab key="/sign-in" title="Sign In">
