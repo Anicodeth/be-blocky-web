@@ -1,3 +1,4 @@
+"use client"
 import { getDateString } from "@/lib/utils";
 import { PageHeader } from "./page-header";
 import { Student } from "@/types";
@@ -7,19 +8,17 @@ import { Card, CardContent, CardHeader } from "./ui/card";
 import { ChevronLeft, ChevronRight, Edit2, Edit3, Plus, PlusCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { StudentCard } from "./student-card";
+import { useAuthContext } from "./context/auth-context";
 
 interface Props {
     students: Student[]
 }
 
 export function ParentDashboard({ students }: Props) {
-
+    const { user } = useAuthContext()
     return (
         <div>
-            <PageHeader
-                title="Welcome back"
-                description={getDateString()}
-            />
+            <PageHeader />
             <div className=" py-4 flex items-center justify-between">
                 <h2 className=" font-heading text-xl lg:text-3xl">
                     Children

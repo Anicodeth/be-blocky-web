@@ -1,4 +1,5 @@
 import { MobileNav } from "@/components/mobile-nav";
+import { PageHeader } from "@/components/page-header";
 import { SideBar, SidebarNavItem } from "@/components/side-bar";
 import { ReactNode } from "react";
 
@@ -13,7 +14,7 @@ const items: SidebarNavItem[] = [{
     icon: "Home"
 }, {
     title: "Progress",
-    href: "/progress",
+    href: "/dashboard/progress",
     icon: "Progress"
 }, {
     title: "Courses",
@@ -21,15 +22,15 @@ const items: SidebarNavItem[] = [{
     icon: "Courses"
 }, {
     title: "Upgrade Plan",
-    href: "/upgrade",
+    href: "/dashboard/upgrade",
     icon: "Cart"
 }, {
     title: "Support",
-    href: "/support",
+    href: "/dashboard/support",
     icon: "Support"
 }, {
     title: "Setting",
-    href: "/settings",
+    href: "/dashboard/settings",
     icon: "Settings"
 }]
 

@@ -15,7 +15,7 @@ export function SchoolDashboard({ classrooms }: { classrooms: Classroom[] }) {
     const pathname = usePathname()
     return (
         <div>
-            <PageHeader title="Welcome Back" description={getDateString()} />
+            <PageHeader />
             <div className="my-4 flex flex-col">
                 <Tabs aria-label="Options" size="lg" variant="solid" radius="full" classNames={{
                     ...tabStyle,
