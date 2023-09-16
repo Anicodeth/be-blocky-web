@@ -16,8 +16,11 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
+import { getAuth } from "firebase/auth";
 import { useForm } from "react-hook-form";
-import { updatePasswordSetting, updateUserSetting } from "@/actions/setting";
+import { updateEmailSetting, updatePasswordSetting, updateUserSetting } from "@/actions/setting";
+import firebase_app from '@/lib/firebase/firebase-client';
+import { useRouter } from "next/navigation";
 
 const userSettingSchema = z.object({
   firstName: z.string(),
@@ -29,8 +32,14 @@ const passwordSettingSchema = z.object({
   newPassword: z.string(),
 });
 
+const emailSettingSchema = z.object({
+  email: z.string().email(),
+});
+
 export default function page() {
   const { user } = useAuthContext();
+  const router = useRouter();
+  const auth = getAuth(firebase_app)
 
   type UserSettingSchema = z.infer<typeof userSettingSchema>;
   const userSettingForm = useForm<UserSettingSchema>({
@@ -45,7 +54,18 @@ export default function page() {
     resolver: zodResolver(passwordSettingSchema),
   });
   function onPasswordSettingSubmit(data: PasswordSettingSchema) {
-    updatePasswordSetting({userId: user?.uid as string, ...data})
+    updatePasswordSetting({ userId: user?.uid as string, ...data });
+  }
+
+  type EmailSettingSchema = z.infer<typeof emailSettingSchema>;
+  const emailSettingForm = useForm<EmailSettingSchema>({
+    resolver: zodResolver(emailSettingSchema),
+  });
+  function onEmailSettingSubmit(data: EmailSettingSchema) {
+    console.log(data);
+    updateEmailSetting({ userId: user?.uid as string, ...data });
+    auth.signOut()
+    router.push("/sign-in")
   }
 
   return (
@@ -151,12 +171,29 @@ export default function page() {
           </div>
         </div>
         <div className=" border-t border-ecstasy-200 mt-8">
-          <div className=" py-6 flex flex-col space-y-2">
-            <h3 className=" text-2xl font-semibold">Email</h3>
-            <Input className=" md:w-5/12" defaultValue={user?.email ?? ""} />
-          </div>
+          <Form {...emailSettingForm}>
+            <form
+              className=" space-y-3"
+              onSubmit={emailSettingForm.handleSubmit(onEmailSettingSubmit)}
+            >
+              <FormField
+                control={emailSettingForm.control}
+                name="email"
+                render={({ field }) => (
+                  <div className=" py-6 flex flex-col space-y-2">
+                    <Label className=" text-2xl font-semibold">Email</Label>
+                    <Input
+                      className=" md:w-5/12"
+                      {...field}
+                      defaultValue={user?.email ?? ""}
+                    />
+                  </div>
+                )}
+              />
+              <Button>Save Changes</Button>
+            </form>
+          </Form>
         </div>
-        <Button>Save Changes</Button>
       </div>
     </div>
   );
