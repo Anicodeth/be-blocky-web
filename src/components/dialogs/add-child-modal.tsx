@@ -248,53 +248,55 @@ export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void })
                     )}
                 />
 
-                <FormField
-                    control={form.control}
-                    name="classroom"
-                    render={({ field }) => {
-                        return (
-                            <FormItem className=" w-full">
-                                <FormControl>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant="outline"
-                                                role="combobox"
-                                                className="justify-between"
-                                                aria-expanded={true}
-                                            >
-                                                {form.getValues("classroom")?.length ? form.getValues("classroom") : "Select Classroom"}
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="p-0 min-w-full">
-                                            <Command>
-                                                <CommandInput placeholder="Search classroom..." className="h-9" />
-                                                <CommandEmpty>No classroom found.</CommandEmpty>
-                                                <CommandGroup>
-                                                    {classrooms.map((classroom) => (
-                                                        <CommandItem
-                                                            key={classroom.name}
-                                                            onSelect={(currentValue) => form.setValue("classroom", currentValue === form.getValues("classroom") ? "" : currentValue)}
-                                                            className="cursor-pointer"
-                                                        >
-                                                            {classroom.name}
-                                                            <CheckIcon
-                                                                className={cn(
-                                                                    "ml-auto h-4 w-4",
-                                                                    form.getValues("classroom") === classroom.uid ? "opacity-100" : "opacity-0"
-                                                                )}
-                                                            />
-                                                        </CommandItem>
-                                                    ))}
-                                                </CommandGroup>
-                                            </Command>
-                                        </PopoverContent>
-                                    </Popover>
-                                </FormControl>
-                            </FormItem>
-                        )
-                    }}
-                />
+                {
+                    userAccountData?.role === "school" && <FormField
+                        control={form.control}
+                        name="classroom"
+                        render={({ field }) => {
+                            return (
+                                <FormItem className=" w-full">
+                                    <FormControl>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    className="justify-between"
+                                                    aria-expanded={true}
+                                                >
+                                                    {form.getValues("classroom")?.length ? form.getValues("classroom") : "Select Classroom"}
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="p-0 min-w-full">
+                                                <Command>
+                                                    <CommandInput placeholder="Search classroom..." className="h-9" />
+                                                    <CommandEmpty>No classroom found.</CommandEmpty>
+                                                    <CommandGroup>
+                                                        {classrooms.map((classroom) => (
+                                                            <CommandItem
+                                                                key={classroom.name}
+                                                                onSelect={(currentValue) => form.setValue("classroom", currentValue === form.getValues("classroom") ? "" : currentValue)}
+                                                                className="cursor-pointer"
+                                                            >
+                                                                {classroom.name}
+                                                                <CheckIcon
+                                                                    className={cn(
+                                                                        "ml-auto h-4 w-4",
+                                                                        form.getValues("classroom") === classroom.uid ? "opacity-100" : "opacity-0"
+                                                                    )}
+                                                                />
+                                                            </CommandItem>
+                                                        ))}
+                                                    </CommandGroup>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </FormControl>
+                                </FormItem>
+                            )
+                        }}
+                    />
+                }
                 <Button className=" w-full mt-4" type="submit" disabled={isLoading}>
                     {
                         isLoading ? <Loading /> : isParent ? "Add Child" : "Add Student"
