@@ -24,17 +24,15 @@ export async function updateUserSetting({
 
 export async function updatePasswordSetting({
   userId,
-  oldPassword,
   newPassword,
 }: {
   userId: string;
-  oldPassword: string;
   newPassword: string;
 }) {
-  const user = await auth().getUser(userId);
-  await auth().generatePasswordResetLink(user.email as string);
-  console.log(oldPassword, newPassword);
-  revalidatePath("/dashboard/settings");
+  await auth().updateUser(userId, {
+    password: newPassword,
+  });
+  cookies().delete("session");
 }
 
 export async function updateEmailSetting({
@@ -47,5 +45,5 @@ export async function updateEmailSetting({
   await auth().updateUser(userId, {
     email,
   });
-  cookies().delete('session')
+  cookies().delete("session");
 }

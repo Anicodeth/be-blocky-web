@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { updateEmailSetting, updatePasswordSetting, updateUserSetting } from "@/actions/setting";
 import firebase_app from '@/lib/firebase/firebase-client';
 import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 const userSettingSchema = z.object({
   firstName: z.string(),
@@ -28,7 +29,6 @@ const userSettingSchema = z.object({
 });
 
 const passwordSettingSchema = z.object({
-  oldPassword: z.string(),
   newPassword: z.string(),
 });
 
@@ -40,6 +40,7 @@ export default function page() {
   const { user } = useAuthContext();
   const router = useRouter();
   const auth = getAuth(firebase_app)
+  const { toast } = useToast()
 
   type UserSettingSchema = z.infer<typeof userSettingSchema>;
   const userSettingForm = useForm<UserSettingSchema>({
@@ -55,6 +56,13 @@ export default function page() {
   });
   function onPasswordSettingSubmit(data: PasswordSettingSchema) {
     updatePasswordSetting({ userId: user?.uid as string, ...data });
+    auth.signOut()
+    router.push("/sign-in")
+    toast({
+      title: "Login again",
+      description: "Login again with the new password.",
+      duration: 7000
+    })
   }
 
   type EmailSettingSchema = z.infer<typeof emailSettingSchema>;
@@ -66,6 +74,11 @@ export default function page() {
     updateEmailSetting({ userId: user?.uid as string, ...data });
     auth.signOut()
     router.push("/sign-in")
+    toast({
+      title: "Login again",
+      description: "Login again with the new email.",
+      duration: 7000
+    })
   }
 
   return (
@@ -132,22 +145,6 @@ export default function page() {
                     onPasswordSettingSubmit
                   )}
                 >
-                  <FormField
-                    control={passwordSettingForm.control}
-                    name="oldPassword"
-                    render={({ field }) => (
-                      <FormItem className=" space-y-2">
-                        <Label className=" text-sm md:text-xl">
-                          Old Password
-                        </Label>
-                        <PasswordInput
-                          placeholder="old password"
-                          className=" md:w-3/4"
-                          {...field}
-                        />
-                      </FormItem>
-                    )}
-                  />
                   <FormField
                     control={passwordSettingForm.control}
                     name="newPassword"
