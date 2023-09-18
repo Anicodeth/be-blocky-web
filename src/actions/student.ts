@@ -28,19 +28,22 @@ export async function createChild({ email, password, displayName, parentId, clas
 }
 
 export async function createStudent({ parentId, className, studentId, studentName, studentEmail }: { parentId: string, className: string, studentId: string, studentEmail: string, studentName: string }) {
+    console.log(className)
     await setDoc(doc(db, "users", studentId), {
         uid: studentId,
         email: studentEmail,
         name: studentName,
         role: "Student",
         credit: 0,
-        parentId
+        parentId,
+        classId: className
     })
     await addDoc(collection(db, "School", parentId, "Classes", className, "Students"), {
         name: studentName,
         email: studentEmail,
         password: "",
-        parentId
+        parentId,
+        className
     });
 }
 

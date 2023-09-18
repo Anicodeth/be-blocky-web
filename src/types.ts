@@ -25,6 +25,7 @@ export interface Student {
 
 
 export interface Classroom {
+    uid: string
     name: string
 }
 

@@ -31,17 +31,6 @@ export async function getDashboardData() {
             }
         }
         if (user.role === "school") {
-            const schoolRef = collection(db, "School");
-            const schoolSnap = await getDocs(schoolRef);
-            let data: School[] = []
-            schoolSnap.forEach(doc => {
-                if (doc.exists()) {
-                    if (doc.data().uid === uid) {
-                        data.push(doc.data() as School)
-                    }
-                }
-            })
-            console.log(data)
             return {
                 role: user.role
             }

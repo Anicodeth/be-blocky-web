@@ -19,7 +19,7 @@ export const plans = [
             yearly: 10000
         },
         quota: {
-
+            studentCount: 3
         },
         description: "Unlocks access to some of our best courses."
     },
@@ -30,7 +30,7 @@ export const plans = [
             yearly: 25000
         },
         quota: {
-
+            studentCount: 5
         },
         description: "Provides access to premium courses."
     },
@@ -40,7 +40,9 @@ export const plans = [
             monthly: 5000,
             yearly: 50000
         },
-        quota: {},
+        quota: {
+            studentCount: 10
+        },
         description: "For the best learning experience."
     },
 ] as const

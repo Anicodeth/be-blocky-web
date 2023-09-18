@@ -25,15 +25,17 @@ import { Label } from "../ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
 import { cn } from "@/lib/utils";
+import { Classroom } from "@/types";
 
 const db = getFirestore(firebase_app as FirebaseApp)
 
 interface Props {
     another?: boolean
     isSchool?: boolean
+    classrooms?: Classroom[]
 }
 
-export function AddChildModal({ another, isSchool }: Props) {
+export function AddChildModal({ another, isSchool, classrooms }: Props) {
     const [open, setOpen] = useState(false)
     const isMobile = useIsMobile()
     const [accountType, setAccountType] = useState<"new" | "existing">()
@@ -70,7 +72,7 @@ export function AddChildModal({ another, isSchool }: Props) {
                     </div>
                 </DialogDescription>
                 {
-                    accountType === "new" ? <RegisterForm setOpen={setOpen} /> : accountType === "existing" ? <AlreadyRegistered setOpen={setOpen} /> : null
+                    accountType === "new" ? <RegisterForm classrooms={classrooms ?? []} setOpen={setOpen} /> : accountType === "existing" ? <AlreadyRegistered setOpen={setOpen} /> : null
                 }
             </DialogContent>
         </Dialog>
@@ -170,7 +172,7 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
     )
 }
 
-export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void }) => {
+export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean) => void, classrooms: Classroom[] }) => {
     const { user } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const { userAccountData } = useGetFullUser()
@@ -178,12 +180,11 @@ export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void })
     const form = useForm<AddChildSchema>({
         resolver: zodResolver(addChildSchema)
     })
-    const classrooms = [{ name: "Class A", uid: "classA" }, { name: "Class B", uid: "classB" }]
     async function onSubmit(data: AddChildSchema) {
         setIsLoading(true)
         const className = userAccountData?.role === "parent" ? "Class A" : "Students"
         try {
-            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, className })
+            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, className: data.classroom ?? className })
             setIsLoading(false)
             setOpen(false)
             toast({
@@ -274,9 +275,10 @@ export const RegisterForm = ({ setOpen }: { setOpen: (state: boolean) => void })
                                                     <CommandGroup>
                                                         {classrooms.map((classroom) => (
                                                             <CommandItem
-                                                                key={classroom.name}
+                                                                key={classroom.uid}
                                                                 onSelect={(currentValue) => form.setValue("classroom", currentValue === form.getValues("classroom") ? "" : currentValue)}
                                                                 className="cursor-pointer"
+                                                                value={classroom.uid}
                                                             >
                                                                 {classroom.name}
                                                                 <CheckIcon

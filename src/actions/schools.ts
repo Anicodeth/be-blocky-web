@@ -1,8 +1,15 @@
+"use server"
+
 import { cookies } from 'next/headers';
 import firebase_app from '@/lib/firebase/firebase-client';
-import { collection, doc, getDoc, getDocs, getFirestore } from 'firebase/firestore';
-import { School, Student, User } from '@/types';
+import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, where } from 'firebase/firestore';
+import { Classroom, School, Student, User } from '@/types';
 import { auth } from 'firebase-admin';
+import { customInitApp } from '@/lib/firebase/firebase-admin';
+
+
+customInitApp()
+const db = firebase_app ? getFirestore(firebase_app) : undefined;
 
 export async function getSchools() {
     const session = cookies().get("session")?.value || "";
@@ -11,7 +18,6 @@ export async function getSchools() {
     }
     const decodedClaims = await auth().verifySessionCookie(session, true);
     const { uid } = decodedClaims;
-    const db = firebase_app ? getFirestore(firebase_app) : undefined;
     if (!db) {
         throw ("Database doesn't exist")
     }
@@ -22,26 +28,48 @@ export async function getSchools() {
         if (user.role === "school") {
             const classesRef = collection(db, "School", uid, "Classes");
             const classesSnap = await getDocs(classesRef);
-            const classes = await Promise.all(classesSnap.docs.map(async (doc) => {
-                const studentsRef = collection(db, "School", uid, "Classes", `${doc.data().name}`, "Students");
-                const studentsSnap = await getDocs(studentsRef);
+            const q = query(collection(db, "Classes"), where("userId", "==", uid));
+            const querySnapshot = await getDocs(q);
+            const data = await Promise.all(querySnapshot.docs.map(async (doc) => {
+                const studentsQuery = query(collection(db, "users"), where("classId", "==", doc.data().name))
+                const studentsSnap = await getDocs(studentsQuery)
                 const students = studentsSnap.docs.map((doc) =>
                     ({ ...doc.data() } as Student)
                 );
-                // console.log(students, doc.data(), "here");
-                return { class: ({ ...doc.data() } as School), students: students };
-            }));
-            console.log(classes, "aqui")
-            return {
-                school: classes,
-                role: user.role
-            }
+                return {
+                    classRoom: doc.data() as Classroom,
+                    students
+                }
+            }))
+            return data
         }
-        return {
-            role: user.role
-        }
+        return null
     }
     throw ("User Doesn't Exist")
 }
 
 
+export const addClass = async (userId: string, name: string) => {
+    if (!db) {
+        throw Error("Db Isn't here")
+    }
+    const res = await addDoc(collection(db, "Classes"), {
+        name,
+        userId
+    })
+    console.log(res.id)
+}
+
+export const getClasses = async (userId: string) => {
+    if (!db) {
+        throw Error("Db Isn't here")
+    }
+    const docRef = doc(db, "Classes", userId)
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        return docSnap.data()
+    } else {
+        console.log("No such document!");
+    }
+}
