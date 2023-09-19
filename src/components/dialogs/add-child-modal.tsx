@@ -40,6 +40,7 @@ export function AddChildModal({ another, isSchool, classrooms }: Props) {
     const isMobile = useIsMobile()
     const [accountType, setAccountType] = useState<"new" | "existing">()
     const name = isSchool ? "Student" : "Child"
+    
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
