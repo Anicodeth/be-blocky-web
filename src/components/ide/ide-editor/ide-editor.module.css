@@ -1,0 +1,100 @@
+/* Global styles for all editors */
+.all-editors {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+}
+
+/* Styles for the editor toggle container */
+.editor-toggle {
+  display: flex;
+  margin-bottom: 0.75rem;
+  position: absolute;
+  top: 0;
+  border-radius: 0 0 1rem 1rem;
+  overflow: hidden;
+  z-index: 10;
+}
+
+/* Styles for the buttons inside the editor toggle container */
+.editor-toggle button {
+  background-color: #ccc;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  font-weight: bold;
+  width: 4rem;
+  align-items: center;
+}
+
+.editor-toggle button.active {
+  background-color: #eaeaea;
+}
+
+/* Styles for the editor section */
+.editor-section {
+  display: none;
+  width: 100%;
+}
+
+/* Styles for the app ace editor */
+.app-ace-editor {
+  height: 100%;
+  width: 100%;
+}
+
+/* Styles for the label container */
+.label-container {
+  height: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color:#1A1A1A;
+  color:cyan;
+  background-color: black;
+  /* border-radius: 1rem 1rem 0rem 0rem; */
+  
+}
+
+/* Hide class */
+.hide {
+  display: none;
+}
+
+/* Active class */
+.active {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+
+.vertical-button{
+  display: grid;
+  place-items: center;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #444857;
+  color: #76DAFF;
+  padding: 1rem;
+  border-radius: 5rem;
+  height: 3rem;
+  width: 3rem;
+  transition: 0.3s linear;
+  
+}
+
+.vertical-button:hover{
+  background-color: #1E1F26;
+  color:white;
+}
+
+.icon{
+  display: grid;
+  place-items: center;
+}

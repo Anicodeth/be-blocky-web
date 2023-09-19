@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@hookform/resolvers": "^3.3.1",
     "@nextui-org/checkbox": "^2.0.19",
     "@nextui-org/react": "^2.1.10",
@@ -42,6 +44,7 @@
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
+    "ace-builds": "^1.26.0",
     "autoprefixer": "10.4.15",
     "axios": "^1.5.0",
     "check-password-strength": "^2.0.7",
@@ -53,6 +56,7 @@
     "firebase": "^10.3.1",
     "firebase-admin": "^11.10.1",
     "framer-motion": "^10.16.4",
+    "free-solid-svg-icons": "link:/@fortawesome/free-solid-svg-icons",
     "lucide-react": "^0.274.0",
     "nanoid": "^4.0.2",
     "next": "13.4.19",

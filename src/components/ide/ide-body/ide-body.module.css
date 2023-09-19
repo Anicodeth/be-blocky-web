@@ -1,0 +1,64 @@
+.ide-body-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width:100%;
+    overflow: hidden;
+    margin: 0;
+    transition: linear 0.3s;
+    
+}
+
+.ide-body-segment{
+    display: flex;
+    height: 100%;
+    width:100%;
+    overflow: hidden;
+    margin: 0;
+    border-radius: 0 0 2rem 2rem; 
+    margin:0.75rem;
+}
+
+.window-toggle {
+    display: none;    
+    z-index: 1;
+    width: 100%;
+
+}
+
+.window-toggle-button{
+    flex:1rem;
+    background-color: #444857;
+    color: #76DAFF;
+    font-family: monospace !important;
+    font-size: 1rem;
+    height:2.35rem;
+    font-weight: bold;
+}
+
+.header-icon{
+margin-left:0.25rem;
+}
+
+
+.window-toggle button.active {
+    background-color: #1E1F26;
+    color:white;
+  }
+
+  @media (max-width:1000px) {
+
+    .window-toggle{
+        display: flex;
+    }
+    .ide-body-segment{
+        display: none;
+        margin:0.5rem;
+    }
+    .reveal{
+        display: block;
+    }
+
+    
+}
