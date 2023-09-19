@@ -1,29 +1,14 @@
 "use client";
 import { Tab, Tabs } from "@nextui-org/react";
-import { tabStyle } from "../../../lib/style";
-import { Classroom, Student } from "@/types";
+import { Student } from "@/types";
 import { AddChildModal } from "@/components/dialogs/add-child-modal";
 import { EmptyPlaceholder } from "@/components/empty-placehoder";
 import { StudentCard } from "@/components/student-card";
 
 interface props {
-  data:
-    | {
-        student: Student[];
-        role: "parent";
-      }
-    | {
-        role: "school";
-        student?: undefined;
-      };
-  school:
-    | {
-        classRoom: Classroom;
-        students: Student[];
-      }[]
-    | null;
+  data: Student[]
 }
-export const ProgressTabs = ({ data, school }: props) => {
+export const ProgressTabs = ({ data }: props) => {
   return (
     <Tabs
       aria-label="Options"
@@ -38,9 +23,9 @@ export const ProgressTabs = ({ data, school }: props) => {
       }}
     >
       <Tab key="child" title="Child">
-        {data.student?.length ? (
+        {data?.length ? (
           <div>
-            {data.student.map((student) => (
+            {data.map((student) => (
               <StudentCard student={student} key={student.name} />
             ))}
           </div>
