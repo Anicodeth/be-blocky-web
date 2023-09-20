@@ -13,7 +13,7 @@ export default async function page() {
         <div>
             <SubscriptionModal />
             {
-                data.role === "parent" ? <ParentDashboard students={data.student} /> : data.role === "school" ? <SchoolDashboard data={school ?? []} /> : <StudentDashboard />
+                data.role === "parent" ? <ParentDashboard students={data.student} /> : data.role === "school" ? <SchoolDashboard data={school ?? []} /> : <StudentDashboard courses={[]} />
             }
         </div>
     )

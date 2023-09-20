@@ -1,31 +1,29 @@
 "use client"
+import { createChild, createStudent, getUserByEmail } from "@/actions/student";
+import useGetFullUser from "@/hooks/use-full-user";
+import { useIsMobile } from "@/hooks/use-viewport";
+import { errorToast } from "@/lib/error-toast";
+import firebase_app from '@/lib/firebase/firebase-client';
+import { AddChildSchema, addChildSchema } from '@/lib/schema/auth';
+import { Classroom } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FirebaseApp } from "firebase/app";
+import { User } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { PlusCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { useAuthContext } from "../context/auth-context";
+import { Loading } from "../loading";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
-import { AddChildSchema, addChildSchema } from '@/lib/schema/auth';
-import { errorToast } from "@/lib/error-toast";
-import { Loading } from "../loading";
-import { FormEvent, useState } from "react";
-import { User, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase/firebase-auth";
-import { addDoc, collection, doc, getFirestore, setDoc } from "firebase/firestore";
-import firebase_app from '@/lib/firebase/firebase-client';
-import { FirebaseApp } from "firebase/app";
-import { useAuthContext } from "../context/auth-context";
-import { toast } from "../ui/use-toast";
-import useGetFullUser from "@/hooks/use-full-user";
-import { createChild, createStudent, getUserByEmail } from "@/actions/student";
-import { CheckIcon, PlusCircle } from "lucide-react";
-import { useIsMobile } from "@/hooks/use-viewport";
 import { Label } from "../ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "../ui/command";
-import { cn } from "@/lib/utils";
-import { Classroom } from "@/types";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { toast } from "../ui/use-toast";
 
 const db = getFirestore(firebase_app as FirebaseApp)
 
@@ -40,7 +38,7 @@ export function AddChildModal({ another, isSchool, classrooms }: Props) {
     const isMobile = useIsMobile()
     const [accountType, setAccountType] = useState<"new" | "existing">()
     const name = isSchool ? "Student" : "Child"
-    
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -125,7 +123,7 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
                 studentName: foundUser.displayName as string,
                 studentEmail: foundUser.email as string,
                 studentId: foundUser.uid,
-                className
+                classroom: className
             })
             setIsLoading(false)
             setOpen(false)
@@ -178,14 +176,18 @@ export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean
     const [isLoading, setIsLoading] = useState(false)
     const { userAccountData } = useGetFullUser()
     const isParent = userAccountData?.role === "parent"
+    const router = useRouter()
     const form = useForm<AddChildSchema>({
-        resolver: zodResolver(addChildSchema)
+        resolver: zodResolver(addChildSchema),
+        defaultValues: {
+            classroom: undefined
+        }
     })
     async function onSubmit(data: AddChildSchema) {
         setIsLoading(true)
         const className = userAccountData?.role === "parent" ? "Class A" : "Students"
         try {
-            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, className: data.classroom ?? className })
+            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, classroom: data.classroom ?? className })
             setIsLoading(false)
             setOpen(false)
             toast({
@@ -199,6 +201,7 @@ export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean
             })
             console.error(error)
         }
+        router.refresh()
     }
     return (
         <Form {...form}>
@@ -255,45 +258,24 @@ export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean
                         control={form.control}
                         name="classroom"
                         render={({ field }) => {
+                            const classroom = form.getValues("classroom")
                             return (
                                 <FormItem className=" w-full">
                                     <FormControl>
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <Button
-                                                    variant="outline"
-                                                    role="combobox"
-                                                    className="justify-between"
-                                                    aria-expanded={true}
-                                                >
-                                                    {form.getValues("classroom")?.length ? form.getValues("classroom") : "Select Classroom"}
-                                                </Button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="p-0 min-w-full">
-                                                <Command>
-                                                    <CommandInput placeholder="Search classroom..." className="h-9" />
-                                                    <CommandEmpty>No classroom found.</CommandEmpty>
-                                                    <CommandGroup>
-                                                        {classrooms.map((classroom) => (
-                                                            <CommandItem
-                                                                key={classroom.uid}
-                                                                onSelect={(currentValue) => form.setValue("classroom", currentValue === form.getValues("classroom") ? "" : currentValue)}
-                                                                className="cursor-pointer"
-                                                                value={classroom.uid}
-                                                            >
-                                                                {classroom.name}
-                                                                <CheckIcon
-                                                                    className={cn(
-                                                                        "ml-auto h-4 w-4",
-                                                                        form.getValues("classroom") === classroom.uid ? "opacity-100" : "opacity-0"
-                                                                    )}
-                                                                />
-                                                            </CommandItem>
-                                                        ))}
-                                                    </CommandGroup>
-                                                </Command>
-                                            </PopoverContent>
-                                        </Popover>
+                                        <Select value={classroom?.length ? classroom : undefined} onValueChange={(value) => form.setValue("classroom", value)}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Classroom" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {
+                                                    classrooms.map(cls => (
+                                                        <SelectItem key={cls.uid} value={cls.uid}>
+                                                            {cls.name}
+                                                        </SelectItem>
+                                                    ))
+                                                }
+                                            </SelectContent>
+                                        </Select>
                                     </FormControl>
                                 </FormItem>
                             )

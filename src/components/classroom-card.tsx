@@ -1,17 +1,19 @@
 "use client"
 
-import { ChevronRight, Plus } from "lucide-react";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { Button } from "./ui/button";
-import { Classroom } from "@/types";
 import { useIsMobile } from "@/hooks/use-viewport";
-import { EditChildModal } from "./dialogs/edit-child-modal";
+import useCourses from "@/hooks/user-courses";
+import { Classroom } from "@/types";
+import { Plus } from "lucide-react";
+import { EditClassRoomModal } from "./dialogs/edit-classroom-modal";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader } from "./ui/card";
 import { CopyButton } from "./ui/copy-button";
 
 
 
 export function ClassroomCard({ classroom }: { classroom: Classroom }) {
     const isMobile = useIsMobile()
+    const { courses } = useCourses()
     return (
         <Card className="rounded-2xl lg:w-1/4">
             <CardHeader className=" text-white p-6 bg-gradient-to-tr from-lime-600 to-lime-500 rounded-t-2xl">
@@ -24,7 +26,7 @@ export function ClassroomCard({ classroom }: { classroom: Classroom }) {
                     <p className="font-medium pt-4">
                         {classroom.name}
                     </p>
-                    <EditChildModal />
+                    <EditClassRoomModal classroom={classroom} />
                 </div>
                 <div className=" flex items-center">
                     <Button size="sm" className="text-xs" variant="secondary">
@@ -51,16 +53,18 @@ export function ClassroomCard({ classroom }: { classroom: Classroom }) {
                     <p className=" text-sm font-bold">
                         Course
                     </p>
-                    <p className=" font-medium">
-                        Website Development
-                    </p>
+                    {classroom.courses.map(course => (
+                        <p className=" font-medium text-sm">
+                            {courses.find(c => c._id.toString() === course)?.courseTitle}
+                        </p>
+                    ))}
                 </div>
-                <Button className=" gap-4 py-4 mt-4">
+                {/* <Button className=" gap-4 py-4 mt-4">
                     <span className=" font-semibold text-xs">
                         VIEW PROGRESS
                     </span>
                     <ChevronRight />
-                </Button>
+                </Button> */}
             </CardContent>
         </Card>
     )

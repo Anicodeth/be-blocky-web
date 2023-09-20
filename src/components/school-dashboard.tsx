@@ -1,14 +1,14 @@
 "use client"
-import { getDateString } from "@/lib/utils";
-import { PageHeader } from "./page-header";
+import { tabStyle } from "@/lib/style";
+import { Classroom, Student } from "@/types";
 import { Tab, Tabs } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
-import { tabStyle } from "@/lib/style";
 import { ClassroomCard } from "./classroom-card";
-import { Classroom, Student } from "@/types";
-import SearchBar from "./search-bar";
 import { AddChildModal } from "./dialogs/add-child-modal";
 import { AddClassModal } from "./dialogs/add-class-modal";
+import { EmptyPlaceholder } from "./empty-placehoder";
+import { PageHeader } from "./page-header";
+import SearchBar from "./search-bar";
 import { StudentCard } from "./student-card";
 
 
@@ -29,15 +29,30 @@ export function SchoolDashboard({ data }: { data: { classRoom: Classroom, studen
                         <div className=" w-full md:gap-4 md:space-y-0 space-y-2 md:flex items-center justify-between">
                             <SearchBar className=" p-0 flex-grow" />
                             <AddChildModal isSchool classrooms={data.map(cls => cls.classRoom)} />
-
                         </div>
-                        <div className="flex md:items-center flex-col md:flex-row gap-2 py-4">
-                            {students.map(student => (
-                                <StudentCard student={student} key={student.name} />
-                            ))}
+                        {
+                            !students.length && <div className="py-4">
+                                <EmptyPlaceholder>
+                                    <EmptyPlaceholder.Icon name="Student" />
+                                    <EmptyPlaceholder.Title>
+                                        No Children Added
+                                    </EmptyPlaceholder.Title>
+                                    <EmptyPlaceholder.Description>
+                                        You haven't added any of your child yet. Start adding your children.
+                                    </EmptyPlaceholder.Description>
+                                    <AddChildModal />
+                                </EmptyPlaceholder>
+                            </div>
+                        }
+                        <div className=" py-4 flex items-start gap-2">
+                            {
+                                students.map(student => (
+                                    <StudentCard student={student} classrooms={data.map(d => d.classRoom)} />
+                                ))
+                            }
                         </div>
                     </Tab>
-                    <Tab key="class" title="Class">
+                    <Tab key="class" title="Classrooms">
                         <div className=" w-full md:gap-4 md:space-y-0 space-y-2 md:flex items-center justify-between">
                             <SearchBar className=" p-0 flex-grow" />
                             <AddClassModal />

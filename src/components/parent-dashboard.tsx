@@ -1,14 +1,10 @@
 "use client"
-import { getDateString } from "@/lib/utils";
-import { PageHeader } from "./page-header";
 import { Student } from "@/types";
-import { EmptyPlaceholder } from "./empty-placehoder";
-import { AddChildModal } from "./dialogs/add-child-modal";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { ChevronLeft, ChevronRight, Edit2, Edit3, Plus, PlusCircle } from "lucide-react";
-import { Button } from "./ui/button";
-import { StudentCard } from "./student-card";
 import { useAuthContext } from "./context/auth-context";
+import { AddChildModal } from "./dialogs/add-child-modal";
+import { EmptyPlaceholder } from "./empty-placehoder";
+import { PageHeader } from "./page-header";
+import { StudentCard } from "./student-card";
 
 interface Props {
     students: Student[]
@@ -30,7 +26,7 @@ export function ParentDashboard({ students }: Props) {
                     <div>
                         {
                             students.map(student => (
-                                <StudentCard student={student} key={student.name} />
+                                <StudentCard student={student} key={student.name} classrooms={[]} />
                             ))
                         }
                     </div>

@@ -1,35 +1,62 @@
 "use client"
-import { Edit3, Trash2 } from "lucide-react"
+import { createStudent } from "@/actions/student"
+import useGetFullUser from "@/hooks/use-full-user"
+import { EditChildSchema, editChildSchema } from "@/lib/schema/auth"
+import { Classroom, Student } from "@/types"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Edit3 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useAuthContext } from "../context/auth-context"
+import { Loading } from "../loading"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "../ui/form"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { EditChildSchema, editChildSchema } from "@/lib/schema/auth"
 import { Input } from "../ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
+import { toast } from "../ui/use-toast"
 
 
 
 
-export const EditChildModal = () => {
+export const EditChildModal = ({ student, classrooms }: { student: Student, classrooms: Classroom[] }) => {
     const form = useForm<EditChildSchema>({
-        resolver: zodResolver(editChildSchema({ name: "Beeeeee", email: "b@gmail.com" }))
+        resolver: zodResolver(editChildSchema),
+        defaultValues: {
+            name: student.name,
+            classroom: student.classroom,
+            email: student.email
+        }
     })
+    const { userAccountData } = useGetFullUser()
+    const { user } = useAuthContext()
+    const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
     async function onSubmit(data: EditChildSchema) {
-
+        setIsLoading(true)
+        await createStudent({ parentId: user?.uid as string, classroom: data.classroom, studentId: student.userId, studentEmail: student.email, studentName: data.name })
+        setIsLoading(false)
+        router.refresh()
+        setOpen(false)
+        toast({
+            title: "Successfully done!",
+            description: "Student information updated successfully!"
+        })
     }
+    const [open, setOpen] = useState(false)
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
                 <Edit3 size={16} className="cursor-pointer" />
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        Edit Child Info
+                        Edit Student Info
                     </DialogTitle>
                     <DialogDescription>
-                        Edit your child information, reset password and remove child.
+                        Edit student information
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>
@@ -60,25 +87,41 @@ export const EditChildModal = () => {
                                 )
                             }}
                         />
-                        <FormField
-                            control={form.control}
-                            name="password"
-                            render={({ field }) => {
-                                return (
-                                    <FormItem>
-                                        <FormControl>
-                                            <Input placeholder="New Password" {...field} />
-                                        </FormControl>
-                                    </FormItem>
-                                )
-                            }}
-                        />
-                        <Button variant="outline">
-                            Edit Child Info
+                        {
+                            userAccountData?.role === "school" && <FormField
+                                control={form.control}
+                                name="classroom"
+                                render={({ field }) => {
+                                    const classroom = form.getValues("classroom")
+                                    return (
+                                        <FormItem className=" w-full">
+                                            <FormControl>
+                                                <Select value={classroom?.length ? classroom : undefined} onValueChange={(value) => form.setValue("classroom", value)}>
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select Classroom" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {
+                                                            classrooms.map(cls => (
+                                                                <SelectItem key={cls.uid} value={cls.uid}>
+                                                                    {cls.name}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                        </FormItem>
+                                    )
+                                }}
+                            />
+                        }
+                        <Button>
+                            {isLoading ? <Loading /> : "Edit Child Info"}
                         </Button>
-                        <Button variant="destructive" className="gap-2">
+                        {/* <Button variant="destructive" className="gap-2">
                             <Trash2 size={14} /> Remove Child
-                        </Button>
+                        </Button> */}
                     </form>
                 </Form>
             </DialogContent>
