@@ -20,7 +20,7 @@ export interface User {
 }
 
 export interface Student {
-  uid: string;
+  userId: string;
   name: string;
   classroom: string;
   email: string;
