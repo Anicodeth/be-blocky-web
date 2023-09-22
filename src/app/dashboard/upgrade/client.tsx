@@ -1,22 +1,21 @@
 "use client"
 
 import { addSubscription } from "@/actions/subscription"
+import { useAuthContext } from "@/components/context/auth-context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import useGetFullUser from "@/hooks/use-full-user"
-import useUserSubscription from "@/hooks/use-subscription"
-import { Plan, plans } from "@/lib/chapa/plans"
-import { tabStyle } from "@/lib/style"
-import { cn, nFormat } from "@/lib/utils"
-import { Tab, Tabs } from "@nextui-org/react"
-import { useState } from "react"
-import firebase_app from '@/lib/firebase/firebase-client';
-import { getFirestore } from "firebase/firestore"
-import { useAuthContext } from "@/components/context/auth-context"
 import { toast } from "@/components/ui/use-toast"
 import { siteConfig } from "@/config/site-config"
+import useGetFullUser from "@/hooks/use-full-user"
+import useUserSubscription from "@/hooks/use-subscription"
 import { makePayment } from "@/lib/chapa/initate"
+import { Plan, plans } from "@/lib/chapa/plans"
+import firebase_app from '@/lib/firebase/firebase-client'
+import { cn, nFormat } from "@/lib/utils"
+import { Tab, Tabs } from "@nextui-org/react"
+import { getFirestore } from "firebase/firestore"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 const db = firebase_app ? getFirestore(firebase_app) : undefined;
 

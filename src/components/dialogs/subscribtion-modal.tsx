@@ -1,20 +1,20 @@
 "use client"
-import { useEffect, useState } from "react"
-import { Button } from "../ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog"
-import useUserSubscription from "@/hooks/use-subscription"
-import { Card, CardContent, CardDescription, CardTitle, CardFooter, CardHeader } from "../ui/card"
-import { useAuthContext } from "../context/auth-context"
-import { cn, nFormat } from "@/lib/utils"
-import { siteConfig } from "@/config/site-config"
-import { useRouter } from "next/navigation"
-import { makePayment } from "@/lib/chapa/initate"
-import { doc, getFirestore } from "firebase/firestore"
-import firebase_app from '@/lib/firebase/firebase-client';
 import { addSubscription } from "@/actions/subscription"
+import { siteConfig } from "@/config/site-config"
+import useUserSubscription from "@/hooks/use-subscription"
+import { makePayment } from "@/lib/chapa/initate"
 import { Plan, plans } from "@/lib/chapa/plans"
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+import firebase_app from '@/lib/firebase/firebase-client'
+import { cn, nFormat } from "@/lib/utils"
+import { getFirestore } from "firebase/firestore"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { useAuthContext } from "../context/auth-context"
+import { Button } from "../ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card"
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { ScrollArea } from "../ui/scroll-area"
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 import { toast } from "../ui/use-toast"
 
 
@@ -117,7 +117,7 @@ export const SubscriptionModal = () => {
                                             </CardTitle>
                                         </CardContent>
                                         <CardFooter>
-                                            <Button className="text-xs md:text-base" onClick={() => subscribeToPlan(plan)} disabled={isLoading}>
+                                            <Button className="text-xs md:text-base" onClick={() => subscribeToPlan(plan as Plan)} disabled={isLoading}>
                                                 Choose Plan
                                             </Button>
                                         </CardFooter>

@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
 import { faCoins, faGear, faMoon, faSun } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
-import styles from './ide-header.module.css';
-import { SettingContext } from '../services/settingContext'; // Replace with the actual import path
-import { NightContext } from '../services/nightContext';
+import React, { useContext, useEffect, useState } from 'react';
 import { CoinContext } from '../services/coinContext';
+import { NightContext } from '../services/nightContext';
+import { SettingContext } from '../services/settingContext'; // Replace with the actual import path
+import styles from './ide-header.module.css';
 const IdePageHeader: React.FC = () => {
-  const [showSetting, setShowSetting] = useState();
+  const [showSetting, setShowSetting] = useState<boolean>(false);
   const { isNight, setIsNight } = useContext(NightContext); // Replace with the actual context
   const { coin, setCoin } = useContext(CoinContext); // Replace with the actual context
   function toggleNight() {
