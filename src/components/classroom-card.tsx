@@ -15,7 +15,7 @@ export function ClassroomCard({ classroom }: { classroom: Classroom }) {
     const isMobile = useIsMobile()
     const { courses } = useCourses()
     return (
-        <Card className="rounded-2xl lg:w-1/4">
+        <Card className="rounded-2xl lg:w-1/4 w-full">
             <CardHeader className=" text-white p-6 bg-gradient-to-tr from-lime-600 to-lime-500 rounded-t-2xl">
                 <div className=" border-b pb-2">
                     <p className=" font-medium text-sm">

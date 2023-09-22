@@ -1,3 +1,4 @@
+"use client"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts"
 
 const data = [
@@ -33,7 +34,7 @@ const data = [
 
 export function Overview() {
     return (
-        <ResponsiveContainer width="100%" height={350}>
+        <ResponsiveContainer height={350} width="100%">
             <BarChart data={data}>
                 <XAxis
                     dataKey="name"
@@ -41,6 +42,7 @@ export function Overview() {
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
+                    width={10}
                 />
                 <YAxis
                     stroke="#3E1F04"
@@ -48,8 +50,11 @@ export function Overview() {
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(value) => `${value}`}
+                    width={10}
+                    tickMargin={0}
+                    interval="preserveStartEnd"
                 />
-                <Bar dataKey="total" fill="#F57C13" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="total" fill="#F57C13" width={10} radius={[4, 4, 0, 0]} />
             </BarChart>
         </ResponsiveContainer>
     )

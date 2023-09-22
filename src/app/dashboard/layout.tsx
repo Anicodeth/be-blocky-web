@@ -14,7 +14,8 @@ const items: SidebarNavItem[] = [{
 }, {
     title: "Progress",
     href: "/dashboard/progress",
-    icon: "Progress"
+    icon: "Progress",
+    useInclude: true
 }, {
     title: "Courses",
     href: "/dashboard/courses",

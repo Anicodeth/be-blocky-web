@@ -2,6 +2,7 @@
 
 import { customInitApp } from "@/lib/firebase/firebase-admin";
 import firebase_app from "@/lib/firebase/firebase-client";
+import { Classroom, Student } from "@/types";
 import { auth } from "firebase-admin";
 import { FirebaseApp } from "firebase/app";
 import { User } from "firebase/auth";
@@ -99,4 +100,14 @@ export const addCourse = async (studentId: string, courses: string[]) => {
   await updateDoc(doc(db, "students", studentId), {
     courses,
   });
+};
+
+export const getUser = async (userId: string) => {
+  const user = await auth().getUser(userId);
+  const ref = doc(db, "students", userId);
+  const students = (await getDoc(ref)).data() as Student;
+  const classroom = (
+    await getDoc(doc(db, "classrooms", students.classroom))
+  ).data() as Classroom;
+  return { ...user, ...students, classroom };
 };

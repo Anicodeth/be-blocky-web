@@ -1,9 +1,11 @@
+"use client"
 import { cn } from "@/lib/utils"
 import { useAuthContext } from "./context/auth-context"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 
-export const UserAvatar = ({ className }: { className?: string }) => {
-    const { user } = useAuthContext()
+export const UserAvatar = ({ className, profile }: { className?: string, profile?: { photoURL?: string, displayName: string } }) => {
+    const { user: currentUser } = useAuthContext()
+    const user = profile ?? currentUser
     return (
         <Avatar className={cn("w-8 h-8", className)}>
             {user?.photoURL ? (

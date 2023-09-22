@@ -5,16 +5,19 @@ import { ParentDashboard } from "@/components/parent-dashboard";
 import { SchoolDashboard } from "@/components/school-dashboard";
 import { StudentDashboard } from "@/components/student-dashboard";
 
-
 export default async function page() {
-    const data = await getDashboardData()
-    const school = await getSchools()
-    return (
-        <div>
-            <SubscriptionModal />
-            {
-                data.role === "parent" ? <ParentDashboard students={data.student} /> : data.role === "school" ? <SchoolDashboard data={school ?? []} /> : <StudentDashboard courses={[]} />
-            }
-        </div>
-    )
+  const data = await getDashboardData();
+  const school = await getSchools();
+  return (
+    <div>
+      <SubscriptionModal />
+      {data.role === "parent" ? (
+        <ParentDashboard students={data.student} />
+      ) : data.role === "school" ? (
+        <SchoolDashboard data={school ?? []} />
+      ) : (
+        <StudentDashboard courses={[]} />
+      )}
+    </div>
+  );
 }
