@@ -1,9 +1,7 @@
 import { z } from "zod";
 
 export const signInSchema = z.object({
-  email: z
-    .string({ required_error: "Please provide valid email address!" })
-    .email("Please provide valid email address!"),
+  email: z.string({ required_error: "Please provide valid email address!" }),
   password: z
     .string({ required_error: "Please provide password!" })
     .refine((pass) => pass.length >= 8, "Password is less than 8 characters"),
@@ -43,10 +41,8 @@ export const addChildSchema = z
     name: z
       .string({ required_error: "Please provide valid name!" })
       .refine((name) => name.includes(" "), "Please provide full name."),
-    email: z
-      .string({ required_error: "Please provide valid email address!" })
-      .email("Please provide valid email address!"),
     classroom: z.string().optional(),
+    username: z.string(),
     password: z
       .string({ required_error: "Please provide password!" })
       .refine((pass) => pass.length >= 8, "Password is less than 8 characters"),

@@ -1,15 +1,14 @@
 "use client"
 import { Loading } from "@/components/loading";
-import { Button } from "@/components/ui/button"
-import { FormControl, FormField, FormItem, Form } from "@/components/ui/form";
-import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { toast } from "@/components/ui/use-toast";
 import { errorToast } from "@/lib/error-toast";
 import { auth } from "@/lib/firebase/firebase-auth";
 import { SignInSchema, signInSchema } from "@/lib/schema/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getRedirectResult, signInWithEmailAndPassword } from "firebase/auth";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -33,7 +32,10 @@ export default function page() {
 
     async function login(data: SignInSchema) {
         setIsLoading(true)
-        const { email, password } = data
+        let { email, password } = data
+        if (!email.includes("@")) {
+            email = `${email}@beblocky.com`
+        }
         await signInWithEmailAndPassword(auth, email, password).then(async (userCred) => {
             fetch("/api/sign-in", {
                 method: "POST",
@@ -60,7 +62,7 @@ export default function page() {
                         render={(field) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input {...field.field} placeholder="Email" type="email" className=" h-10" />
+                                    <Input {...field.field} placeholder="username/email" className=" h-10" />
                                 </FormControl>
                             </FormItem>
                         )}

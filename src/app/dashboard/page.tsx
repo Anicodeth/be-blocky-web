@@ -16,7 +16,7 @@ export default async function page() {
       ) : data.role === "school" ? (
         <SchoolDashboard data={school ?? []} />
       ) : (
-        <StudentDashboard courses={[]} />
+        <StudentDashboard courses={data.courses} />
       )}
     </div>
   );

@@ -3,6 +3,7 @@ import { addClass } from "@/actions/schools"
 import useCourses from "@/hooks/user-courses"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Plus } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -16,8 +17,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 
 export const AddClassModal = () => {
+    const [open, setOpen] = useState(false)
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger>
                 <Button>
                     Add Classroom
@@ -28,14 +30,14 @@ export const AddClassModal = () => {
                     Add New Classroom
                 </DialogHeader>
                 <DialogDescription>
-                    <AddClassForm />
+                    <AddClassForm setOpen={setOpen} />
                 </DialogDescription>
             </DialogContent>
         </Dialog>
     )
 }
 
-export const AddClassForm = () => {
+export const AddClassForm = ({ setOpen }: { setOpen: (state: boolean) => void }) => {
     const { user } = useAuthContext()
     const [isLoading, setIsLoading] = useState(false)
     const schema = z.object({
@@ -49,10 +51,13 @@ export const AddClassForm = () => {
             courses: []
         }
     })
+    const router = useRouter()
     async function onSubmit(data: Schema) {
         setIsLoading(true)
         await addClass(user!.uid, data.name, courseBox.map(d => d.courseId ?? ""))
         setIsLoading(false)
+        router.refresh()
+        setOpen(false)
     }
     const [courseBox, setCourseBox] = useState<{ courseId: string | undefined }[]>([])
     const { courses } = useCourses()

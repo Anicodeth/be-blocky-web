@@ -46,13 +46,12 @@ export function SchoolDashboard({
                 <EmptyPlaceholder>
                   <EmptyPlaceholder.Icon name="Student" />
                   <EmptyPlaceholder.Title>
-                    No Children Added
+                    No Student Added
                   </EmptyPlaceholder.Title>
                   <EmptyPlaceholder.Description>
-                    You haven't added any of your child yet. Start adding your
-                    children.
+                    You haven't added any of your student yet. Start adding student.
                   </EmptyPlaceholder.Description>
-                  <AddChildModal />
+                  <AddChildModal isSchool classrooms={data.map((cls) => cls.classRoom)} />
                 </EmptyPlaceholder>
               </div>
             )}

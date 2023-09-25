@@ -24,12 +24,14 @@ export async function createChild({
   displayName,
   parentId,
   classroom,
+  username,
 }: {
   email: string;
   password: string;
   displayName: string;
   parentId: string;
   classroom: string;
+  username: string;
 }) {
   const createdUser = await auth().createUser({
     email: email,
@@ -40,6 +42,7 @@ export async function createChild({
   await createStudent({
     parentId,
     classroom,
+    studentUsername: username,
     studentId: createdUser.uid,
     studentEmail: createdUser.email as string,
     studentName: createdUser.displayName as string,
@@ -52,12 +55,14 @@ export async function createStudent({
   studentId,
   studentName,
   studentEmail,
+  studentUsername,
 }: {
   parentId: string;
   classroom: string;
   studentId: string;
   studentEmail: string;
   studentName: string;
+  studentUsername: string;
 }) {
   await setDoc(doc(db, "users", studentId), {
     uid: studentId,
@@ -67,6 +72,7 @@ export async function createStudent({
     credit: 0,
     parentId,
     classId: classroom,
+    userName: studentUsername,
   });
   await setDoc(doc(db, "students", studentId), {
     name: studentName,
@@ -75,6 +81,7 @@ export async function createStudent({
     courses: [""],
     parentId,
     userId: studentId,
+    userName: studentUsername,
   });
 }
 
@@ -111,3 +118,4 @@ export const getUser = async (userId: string) => {
   ).data() as Classroom;
   return { ...user, ...students, classroom };
 };
+

@@ -123,7 +123,8 @@ export const AlreadyRegistered = ({ setOpen }: { setOpen: (state: boolean) => vo
                 studentName: foundUser.displayName as string,
                 studentEmail: foundUser.email as string,
                 studentId: foundUser.uid,
-                classroom: className
+                classroom: className,
+                studentUsername: foundUser.email?.replace("@beblocky.com", "") ?? ""
             })
             setIsLoading(false)
             setOpen(false)
@@ -187,7 +188,7 @@ export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean
         setIsLoading(true)
         const className = userAccountData?.role === "parent" ? "Class A" : "Students"
         try {
-            await createChild({ email: data.email, password: data.password, parentId: user!.uid, displayName: data.name, classroom: data.classroom ?? className })
+            await createChild({ username: data.username, email: `${data.username}@beblocky.com`, password: data.password, parentId: user!.uid, displayName: data.name, classroom: data.classroom ?? className })
             setIsLoading(false)
             setOpen(false)
             toast({
@@ -219,11 +220,11 @@ export const RegisterForm = ({ setOpen, classrooms }: { setOpen: (state: boolean
                 />
                 <FormField
                     control={form.control}
-                    name="email"
+                    name="username"
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <Input {...field} placeholder="Email" className=" h-10" />
+                                <Input {...field} placeholder="Username" className=" h-10" />
                             </FormControl>
                         </FormItem>
                     )}

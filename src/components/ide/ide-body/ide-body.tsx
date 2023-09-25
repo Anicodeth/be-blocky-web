@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
 import { faArrowRight, faBars, faCode } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
+import React, { useContext, useEffect, useState } from 'react';
 import IdeEditor from '../ide-editor/ide-editor-section';
 import IdePreviewWindow from '../ide-preview/ide-preview';
 import IdeSlides from '../ide-slides/ide-slides';
-import styles from './ide-body.module.css'; // Import your CSS module here
 import { NightContext } from '../services/nightContext';
+import styles from './ide-body.module.css'; // Import your CSS module here
 
 
 const IdePageBody: React.FC = () => {

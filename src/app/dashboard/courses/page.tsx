@@ -1,16 +1,16 @@
+import { ArrowRight, Star, StarHalf } from "lucide-react";
 import Head from "next/head";
 import Image from "next/image";
-import { ArrowRight, Star, StarHalf } from "lucide-react";
 
+import { PageHeader } from "@/components/page-header";
+import { Badge } from "@/components/ui/badge";
 import {
     Card,
     CardContent,
     CardFooter,
     CardHeader,
-} from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge";
-import Logo from "../../../../public/assets/images/logo.png"
-import { PageHeader } from "@/components/page-header";
+} from "@/components/ui/card";
+import Logo from "../../../../public/assets/images/logo.png";
 
 export default function CoursesRoute() {
     return (
@@ -40,58 +40,6 @@ export default function CoursesRoute() {
                                 <p className="mt-2">4.7 Rating</p>
                             </div>
                         </CardContent>
-                        <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
-                                <ArrowRight size={24} className="text-ecstasy" />
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="text-dark-ebony">
-                        <CardHeader>
-                            <Image src={Logo} alt="Course image" width={220} height={150} className="mx-auto rounded-xl border border-apple mb-3" />
-                            <div className="flex flex-row justify-center gap-2">
-                                <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">HTML</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">CSS</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">JS</Badge>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="-mt-5">
-                            <p className="text-2xl font-semibold">Web Development Course</p>
-                            <div className="flex flex-row justify-between items-center mt-2">
-                                <div className="flex gap-1">
-                                    <Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><StarHalf className="text-apple" size={16} />
-                                </div>
-                                <p className="mt-2">4.7 Rating</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
-                                <ArrowRight size={24} className="text-ecstasy" />
-                            </div>
-                        </CardFooter>
-                    </Card>
-                    <Card className="text-dark-ebony">
-                        <CardHeader>
-                            <Image src={Logo} alt="Course image" width={220} height={150} className="mx-auto rounded-xl border border-apple mb-3" />
-                            <div className="flex flex-row justify-center gap-2">
-                                <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">HTML</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">CSS</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">JS</Badge>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="-mt-5">
-                            <p className="text-2xl font-semibold">Web Development Course</p>
-                            <div className="flex flex-row justify-between items-center mt-2">
-                                <div className="flex gap-1">
-                                    <Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><StarHalf className="text-apple" size={16} />
-                                </div>
-                                <p className="mt-2">4.7 Rating</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
-                                <ArrowRight size={24} className="text-ecstasy" />
-                            </div>
-                        </CardFooter>
                     </Card>
 
                 </div>
@@ -114,8 +62,7 @@ export default function CoursesRoute() {
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
+                            <div className="rounded-full p-1 bg-gray-100 ml-auto">
                                 <ArrowRight size={24} className="text-ecstasy" />
                             </div>
                         </CardFooter>
@@ -137,38 +84,13 @@ export default function CoursesRoute() {
                             </div>
                         </CardContent>
                         <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
+                            <div className="rounded-full p-1 bg-gray-100 ml-auto">
                                 <ArrowRight size={24} className="text-ecstasy" />
                             </div>
                         </CardFooter>
                     </Card>
-                    <Card className="text-dark-ebony">
-                        <CardHeader>
-                            <Image src={Logo} alt="Course image" width={220} height={150} className="mx-auto rounded-xl border border-apple mb-3" />
-                            <div className="flex flex-row justify-center gap-2">
-                                <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">HTML</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">CSS</Badge><Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">JS</Badge>
-                            </div>
-                        </CardHeader>
-                        <CardContent className="-mt-5">
-                            <p className="text-2xl font-semibold">Web Development Course</p>
-                            <div className="flex flex-row justify-between items-center mt-2">
-                                <div className="flex gap-1">
-                                    <Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><Star size={16} className="text-apple" /><StarHalf className="text-apple" size={16} />
-                                </div>
-                                <p className="mt-2">4.7 Rating</p>
-                            </div>
-                        </CardContent>
-                        <CardFooter className="flex flex-row justify-between items-center">
-                            <p className="text-xl font-bold">$25</p>
-                            <div className="rounded-full p-1 bg-gray-100">
-                                <ArrowRight size={24} className="text-ecstasy" />
-                            </div>
-                        </CardFooter>
-                    </Card>
-
                 </div>
-            </div >
+            </div>
         </>
     )
 }

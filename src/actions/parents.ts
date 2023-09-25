@@ -1,5 +1,6 @@
+import { Course } from "@/hooks/user-courses";
 import firebase_app from "@/lib/firebase/firebase-client";
-import { Student, User } from "@/types";
+import { Classroom, Student, User } from "@/types";
 import { auth } from "firebase-admin";
 import {
   collection,
@@ -7,6 +8,8 @@ import {
   getDoc,
   getDocs,
   getFirestore,
+  query,
+  where,
 } from "firebase/firestore";
 import { cookies } from "next/headers";
 
@@ -48,8 +51,23 @@ export async function getDashboardData() {
         role: user.role,
       };
     }
+    const student = await getDocs(
+      query(collection(db, "students"), where("userId", "==", user.uid))
+    ).then((res) => res.docs[0].data() as Student);
+    const classroom = await getDoc(
+      doc(db, "classrooms", student.classroom)
+    ).then((res) => res.data() as Classroom);
+    const courses = await fetch(
+      "https://beb-blocky-ide.vercel.app/api/v1/courses"
+    )
+      .then(async (res) => (await res.json()) as { courses: Course[] })
+      .then((res) => res.courses);
     return {
-      role: user.role,
+      role: "student" as const,
+      student: student,
+      courses: courses.filter((course) =>
+        classroom.courses.includes(course._id.toString())
+      ),
     };
   }
   throw "User Doesn't Exist";
