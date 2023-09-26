@@ -1,6 +1,7 @@
+import { Slide } from '@/hooks/user-courses';
 import { faArrowRight, faBars, faCode } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import IdeEditor from '../ide-editor/ide-editor-section';
 import IdePreviewWindow from '../ide-preview/ide-preview';
 import IdeSlides from '../ide-slides/ide-slides';
@@ -8,12 +9,11 @@ import { NightContext } from '../services/nightContext';
 import styles from './ide-body.module.css'; // Import your CSS module here
 
 
-const IdePageBody: React.FC = () => {
+const IdePageBody = ({ slides, courseId }: { slides: Slide[], courseId: number }) => {
   const [mainCode, setMainCode] = useState<string>(''); // [mainCode, setMainCode
   const [activeWindow, setActiveWindow] = useState('editor');
   const [onlyCode, setOnlyCode] = useState(false);
   const { isNight, setIsNight } = useContext(NightContext); // Replace with the actual context
-
 
   useEffect(() => {
     var val = sessionStorage.getItem("isNight") == 'true';
@@ -57,9 +57,9 @@ const IdePageBody: React.FC = () => {
         {!onlyCode && <div className={`${styles['ide-body-segment']}
                        ${activeWindow === 'slide' ? styles['reveal'] : ''}`}>
           <IdeSlides
-            slides={undefined}
+            slides={slides}
             mainCode={mainCode}
-            course_id={1}
+            course_id={courseId}
           />
         </div>}
         <div className={`${styles['ide-body-segment']} ${activeWindow === 'editor' ? styles['reveal'] : ''}`}>

@@ -11,6 +11,7 @@ export interface Slide {
   code: string;
   startingCode: string;
   image: string;
+  solution: string;
 }
 
 export interface Course {
@@ -19,7 +20,14 @@ export interface Course {
   courseTitle: string;
   courseDescription: string;
   courseLanguage: string;
-  slides: Slide[];
+  lessons: {
+    lessonId: number;
+    lessonTitle: string;
+    lessonDescription: string;
+    lessonLanguage: string;
+    slides: Slide[];
+    _id: string;
+  }[];
   subType: string;
 }
 

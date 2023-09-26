@@ -1,3 +1,4 @@
+import { useAuthContext } from '@/components/context/auth-context';
 import { faCoins, faGear, faMoon, faSun } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
 import React, { useContext, useEffect, useState } from 'react';
@@ -6,16 +7,17 @@ import { NightContext } from '../services/nightContext';
 import { SettingContext } from '../services/settingContext'; // Replace with the actual import path
 import styles from './ide-header.module.css';
 const IdePageHeader: React.FC = () => {
+  const { user } = useAuthContext()
   const [showSetting, setShowSetting] = useState<boolean>(false);
   const { isNight, setIsNight } = useContext(NightContext); // Replace with the actual context
   const { coin, setCoin } = useContext(CoinContext); // Replace with the actual context
   function toggleNight() {
     setIsNight(!isNight);
-    sessionStorage.setItem("isNight", isNight ? 'false' : 'true');
+    localStorage.setItem("isNight", isNight ? 'false' : 'true');
   }
 
   useEffect(() => {
-    var night = sessionStorage.getItem("isNight") == 'true';
+    var night = localStorage.getItem("isNight") == 'true';
     setIsNight(night ? true : false)
   }, [])
 
@@ -45,7 +47,7 @@ const IdePageHeader: React.FC = () => {
 
         <div className={styles['icons-container']}>
           <div className={styles['icon-container']}>
-            <h4>{coin}</h4>
+            <h4>{coin.toFixed(0)}</h4>
           </div>
           <div className={styles['icon-container']}>
             <FontAwesomeIcon icon={faCoins}
@@ -76,7 +78,7 @@ const IdePageHeader: React.FC = () => {
                 fontFamily: 'monospace',
                 marginRight: '0.6rem'
               }}
-            >@Guest </h4>
+            >{user?.displayName}</h4>
           </div>
         </div>
       </div>

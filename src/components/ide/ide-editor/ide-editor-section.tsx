@@ -1,25 +1,25 @@
-import { useState, useEffect, useRef, useContext } from 'react';
+import { faSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
 import ace from 'ace-builds';
-import 'ace-builds/src-noconflict/mode-html';
 import 'ace-builds/src-noconflict/mode-css';
+import 'ace-builds/src-noconflict/mode-html';
 import 'ace-builds/src-noconflict/mode-javascript';
-import 'ace-builds/src-noconflict/theme-dracula';
-import 'ace-builds/src-noconflict/theme-cobalt';
-import 'ace-builds/src-noconflict/theme-chrome';
 import 'ace-builds/src-noconflict/theme-chaos';
+import 'ace-builds/src-noconflict/theme-chrome';
 import 'ace-builds/src-noconflict/theme-clouds';
-import 'ace-builds/src-noconflict/theme-dawn';
-import 'ace-builds/src-noconflict/theme-eclipse';
+import 'ace-builds/src-noconflict/theme-cobalt';
 import 'ace-builds/src-noconflict/theme-crimson_editor';
+import 'ace-builds/src-noconflict/theme-dawn';
+import 'ace-builds/src-noconflict/theme-dracula';
 import 'ace-builds/src-noconflict/theme-dreamweaver';
-import 'ace-builds/src-noconflict/theme-gob';
+import 'ace-builds/src-noconflict/theme-eclipse';
 import 'ace-builds/src-noconflict/theme-github';
+import 'ace-builds/src-noconflict/theme-gob';
 import 'ace-builds/src-noconflict/theme-gruvbox';
 import 'ace-builds/src-noconflict/theme-xcode';
-import styles from './ide-editor.module.css';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { SettingContext } from '../services/settingContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
-import { faShareSquare, faSquare } from '@fortawesome/free-solid-svg-icons';
+import styles from './ide-editor.module.css';
 
 interface CodeState {
   htmlCode: string;

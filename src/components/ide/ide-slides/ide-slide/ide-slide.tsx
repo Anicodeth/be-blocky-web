@@ -1,4 +1,4 @@
-import React from 'react';
+import { cn } from '@/lib/utils';
 import styles from './ide-slide.module.css';
 
 function IdeSlide(props: { backgroundColor: any, title: any; titleFont: any; content: any; contentFont: any; code: any; image: any; }) {
@@ -7,7 +7,6 @@ function IdeSlide(props: { backgroundColor: any, title: any; titleFont: any; con
     title,
     titleFont,
     content,
-    contentFont,
     code,
     image,
   } = props;
@@ -19,7 +18,7 @@ function IdeSlide(props: { backgroundColor: any, title: any; titleFont: any; con
           {title}
         </h1>
         <div className={styles['main-content']}>
-          <div className={styles['text-content']} style={{ fontFamily: contentFont }}>
+          <div className={cn(styles['text-content'], "font-sans")}>
             <p>{content}</p>
           </div>
           {code && <div className={styles['code-content']}>{code}</div>}

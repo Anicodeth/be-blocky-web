@@ -1,12 +1,12 @@
 "use client"
-import React from 'react';
+import { Slide } from '@/hooks/user-courses';
 import IdePageBody from './ide-body/ide-body';
 import IdePageHeader from './ide-header/ide-header';
 import styles from './ide-page.module.css'; // Import the CSS module
 import { CoinProvider } from './services/coinContext';
 import { NightProvider } from './services/nightContext';
 import { SettingProvider } from './services/settingContext';
-const IdePage: React.FC = () => {
+const IdePage = ({ slides, courseId }: { slides: Slide[], courseId: number }) => {
   return (
     <div
       className={styles['ide-page-container']}
@@ -15,7 +15,7 @@ const IdePage: React.FC = () => {
         <NightProvider>
           <SettingProvider>
             <IdePageHeader></IdePageHeader>
-            <IdePageBody></IdePageBody>
+            <IdePageBody slides={slides} courseId={courseId}></IdePageBody>
           </SettingProvider>
         </NightProvider>
       </CoinProvider>
