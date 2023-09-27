@@ -1,11 +1,11 @@
 "use client"
+import { tabStyle } from "@/lib/style"
+import { Tab, Tabs } from "@nextui-org/react"
 import Image from "next/image"
+import { usePathname, useRouter } from "next/navigation"
 import { ReactNode } from "react"
 import Banner from "../../../public/assets/images/default-register.png"
 import Logo from "../../../public/assets/images/logo.png"
-import { Tabs, Tab } from "@nextui-org/react"
-import { usePathname, useRouter } from "next/navigation"
-import { tabStyle } from "@/lib/style"
 interface Props {
     children: ReactNode
 }

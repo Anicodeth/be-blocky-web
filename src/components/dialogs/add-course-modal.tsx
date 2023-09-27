@@ -3,7 +3,9 @@ import useCourses from "@/hooks/user-courses"
 import { guid } from "@/lib/utils"
 import { Student } from "@/types"
 import { Plus, X } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { flushSync } from "react-dom"
 import { Button } from "../ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
@@ -11,12 +13,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 
 
 export const AddCourseModal = ({ student }: { student: Student }) => {
-    const [courseBox, setCourseBox] = useState<{ id: string, courseId: string | undefined }[]>(student.courses?.filter(c => c).map((c) => ({ id: guid(), courseId: c })) ?? [])
+    type CourseBox = { id: string, courseId: string | undefined }[]
+    const [courseBox, setCourseBox] = useState<CourseBox>(student.courses?.filter(c => c).map((c) => ({ id: guid(), courseId: c })) ?? [])
     const { courses } = useCourses()
-    async function add() {
-        const courses = courseBox.filter(d => d)
-        console.log(courses)
-        await addCourse(student.userId, courses.map(d => d.courseId!))
+    const router = useRouter()
+    async function add(crs: CourseBox) {
+        const coursesToAdd = crs.filter(d => d.courseId).map(d => d.courseId!)
+        await addCourse(student.userId, coursesToAdd)
+        router.refresh()
     }
     return (
         <Dialog>
@@ -43,10 +47,10 @@ export const AddCourseModal = ({ student }: { student: Student }) => {
                                 <Select onValueChange={(v) => {
                                     if (v === "remove") {
                                         setCourseBox(prev => [...prev.filter(p => p.id !== box.id)])
-                                        return add()
+                                        return flushSync(() => add([...courseBox.filter(p => p.id !== box.id)]))
                                     }
                                     setCourseBox(prev => [...prev.filter(p => p.id !== box.id), { id: box.id, courseId: v }])
-                                    add()
+                                    flushSync(() => add([...courseBox.filter(p => p.id !== box.id), { id: box.id, courseId: v }]))
                                 }} value={box.courseId}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Choose Course" />
@@ -57,14 +61,16 @@ export const AddCourseModal = ({ student }: { student: Student }) => {
                                                 {course.courseTitle}
                                             </SelectItem>
                                         ))}
-                                        <SelectItem value="remove" className=" border-t rounded-none">
-                                            <div className=" flex items-center gap-2">
-                                                <X size={14} className="text-red-600" />
-                                                <span className=" text-red-600">
-                                                    Remove
-                                                </span>
-                                            </div>
-                                        </SelectItem>
+                                        {
+                                            box.courseId && <SelectItem value="remove" className=" border-t rounded-none">
+                                                <div className=" flex items-center gap-2">
+                                                    <X size={14} className="text-red-600" />
+                                                    <span className=" text-red-600">
+                                                        Remove
+                                                    </span>
+                                                </div>
+                                            </SelectItem>
+                                        }
                                     </SelectContent>
                                 </Select>
                             </div>

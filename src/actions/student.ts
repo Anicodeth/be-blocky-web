@@ -107,6 +107,17 @@ export const addCourse = async (studentId: string, courses: string[]) => {
   await updateDoc(doc(db, "students", studentId), {
     courses,
   });
+
+  // await Promise.allSettled(
+  //   courses.map((course) => {
+  //     setDoc(doc(db, "studentCourses", studentId), {
+  //       courseId: course,
+  //       progress: 0,
+  //       slideIndex: 0,
+  //       coins: 0,
+  //     });
+  //   })
+  // );
 };
 
 export const getUser = async (userId: string) => {
@@ -118,4 +129,3 @@ export const getUser = async (userId: string) => {
   ).data() as Classroom;
   return { ...user, ...students, classroom };
 };
-

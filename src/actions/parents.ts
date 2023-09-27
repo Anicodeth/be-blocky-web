@@ -29,18 +29,12 @@ export async function getDashboardData() {
   if (userSnap.exists()) {
     const user = userSnap.data() as User;
     if (user.role === "parent") {
-      const studentsRef = collection(
-        db,
-        "School",
-        uid,
-        "Classes",
-        "Class A",
-        "Students"
-      );
-      const studentsSnap = await getDocs(studentsRef);
+      const q = query(collection(db, "students"), where("parentId", "==", uid));
+      const studentsSnap = await getDocs(q);
       const students = studentsSnap.docs.map(
         (doc) => ({ ...doc.data() } as Student)
       );
+      console.log(students);
       return {
         student: students,
         role: user.role,
@@ -65,9 +59,13 @@ export async function getDashboardData() {
     return {
       role: "student" as const,
       student: student,
-      courses: courses.filter((course) =>
-        classroom.courses.includes(course._id.toString())
-      ),
+      courses: courses
+        .filter((course) => classroom?.courses.includes(course._id.toString()))
+        .concat(
+          courses.filter((course) =>
+            student.courses?.includes(course._id.toString())
+          )
+        ),
     };
   }
   throw "User Doesn't Exist";

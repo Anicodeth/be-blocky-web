@@ -1,6 +1,7 @@
 import { useAuthContext } from '@/components/context/auth-context';
 import { faCoins, faGear, faMoon, faSun } from '@fortawesome/free-solid-svg-icons/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome/index';
+import Image from 'next/image';
 import React, { useContext, useEffect, useState } from 'react';
 import { CoinContext } from '../services/coinContext';
 import { NightContext } from '../services/nightContext';
@@ -30,17 +31,20 @@ const IdePageHeader: React.FC = () => {
         }}
       >
         <div className={styles['header-image-container']}>
-          {!isNight && <img
+          {!isNight && <Image
             className={styles['header-image']}
-            src='/logos/BeBlocky-Logo-Small.png'
+            src='/assets/images/logo.png'
             alt='BeBlocky Logo'
+            width={130}
+            height={60}
           />}
-
           {isNight &&
-            <img
+            <Image
               className={styles['header-image']}
-              src='/logos/BeBlocky-Logo-Small-White.png'
+              src='/assets/images/logo.png'
               alt='BeBlocky Logo'
+              width={130}
+              height={60}
             />
           }
         </div>

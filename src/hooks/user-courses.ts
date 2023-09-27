@@ -20,6 +20,7 @@ export interface Course {
   courseTitle: string;
   courseDescription: string;
   courseLanguage: string;
+  slides: Slide[];
   lessons: {
     lessonId: number;
     lessonTitle: string;

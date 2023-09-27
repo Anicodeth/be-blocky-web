@@ -1,3 +1,5 @@
+import { getProgress } from '@/actions/ide';
+import { useAuthContext } from '@/components/context/auth-context';
 import { Slide } from '@/hooks/user-courses';
 import { useContext, useState } from 'react';
 import { CoinContext } from '../services/coinContext';
@@ -49,9 +51,9 @@ function IdeSlides(props: {
       alert("You should write the code correctly to go to the next slide",)
     }
   };
-
-  const extractProgress = () => {
-    var progress = localStorage.getItem("progress");
+  const { user } = useAuthContext()
+  const extractProgress = async () => {
+    var progress = await getProgress(user!.uid)
     if (progress) {
       var progressArray = progress.split(" ");
       if (parseInt(progressArray[1]) == props.course_id) {

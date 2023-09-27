@@ -35,8 +35,6 @@ export async function getSchools() {
   if (userSnap.exists()) {
     const user = userSnap.data() as User;
     if (user.role === "school") {
-      const classesRef = collection(db, "School", uid, "Classes");
-      const classesSnap = await getDocs(classesRef);
       const q = query(collection(db, "classrooms"), where("userId", "==", uid));
       const querySnapshot = await getDocs(q);
       const data = await Promise.all(

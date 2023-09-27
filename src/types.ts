@@ -37,3 +37,5 @@ export interface School {
   name: string;
   uid: string;
 }
+
+export interface StudentCourse {}

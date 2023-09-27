@@ -7,10 +7,17 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 customInitApp();
 const db = firebase_app ? getFirestore(firebase_app) : undefined;
 
+if (!db) {
+  throw new Error("DB Not Found");
+}
+
 export const getStudentCourseData = async (uid: string) => {
-  if (!db) {
-    throw new Error("DB Not Found");
-  }
-  const courseData = await getDoc(doc(db, "StudentCourseLessons", uid));
+  const courseData = await getDoc(doc(db, "StudentCourses", uid));
   console.log(courseData);
+};
+
+export const getProgress = async (uid: string) => {
+  const courseData = await getDoc(doc(db, "StudentCourses", uid));
+  console.log(courseData.data());
+  return courseData.data();
 };

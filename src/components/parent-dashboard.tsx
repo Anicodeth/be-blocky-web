@@ -23,7 +23,7 @@ export function ParentDashboard({ students }: Props) {
             </div>
             {
                 students.length ?
-                    <div>
+                    <div className=" md:flex items-start gap-2">
                         {
                             students.map(student => (
                                 <StudentCard student={student} key={student.name} classrooms={[]} />
