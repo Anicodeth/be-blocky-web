@@ -26,7 +26,7 @@ export const EditChildModal = ({ student, classrooms }: { student: Student, clas
         defaultValues: {
             name: student.name,
             classroom: student.classroom,
-            email: student.email
+            username: student.email.replace("@beblocky.com", "")
         }
     })
     const { userAccountData } = useGetFullUser()
@@ -35,7 +35,7 @@ export const EditChildModal = ({ student, classrooms }: { student: Student, clas
     const router = useRouter()
     async function onSubmit(data: EditChildSchema) {
         setIsLoading(true)
-        await createStudent({ parentId: user?.uid as string, classroom: data.classroom, studentId: student.userId, studentEmail: student.email, studentName: data.name })
+        await createStudent({ parentId: user?.uid as string, classroom: data.classroom, studentId: student.userId, studentEmail: student.email, studentName: data.name, studentUsername: data.username })
         setIsLoading(false)
         router.refresh()
         setOpen(false)
@@ -76,12 +76,12 @@ export const EditChildModal = ({ student, classrooms }: { student: Student, clas
                         />
                         <FormField
                             control={form.control}
-                            name="email"
+                            name="username"
                             render={({ field }) => {
                                 return (
                                     <FormItem>
                                         <FormControl>
-                                            <Input placeholder="Email" {...field} />
+                                            <Input placeholder="Username" {...field} />
                                         </FormControl>
                                     </FormItem>
                                 )

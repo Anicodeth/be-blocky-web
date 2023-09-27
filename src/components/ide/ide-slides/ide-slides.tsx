@@ -36,8 +36,8 @@ function IdeSlides(props: {
     }
   };
 
-  const goToNext = () => {
-    var progress = extractProgress();
+  const goToNext = async () => {
+    var progress = await extractProgress();
     const codeCompletion = checkCode()
     if (((currentIndex < slides.length - 1) && codeCompletion) || (currentIndex < progress)) {
       setCurrentIndex(currentIndex + 1);
@@ -53,7 +53,7 @@ function IdeSlides(props: {
   };
   const { user } = useAuthContext()
   const extractProgress = async () => {
-    var progress = await getProgress(user!.uid)
+    var { progress } = await getProgress(user!.uid)
     if (progress) {
       var progressArray = progress.split(" ");
       if (parseInt(progressArray[1]) == props.course_id) {

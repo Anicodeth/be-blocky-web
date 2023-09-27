@@ -19,5 +19,5 @@ export const getStudentCourseData = async (uid: string) => {
 export const getProgress = async (uid: string) => {
   const courseData = await getDoc(doc(db, "StudentCourses", uid));
   console.log(courseData.data(), "student prog", uid);
-  return courseData.data();
+  return courseData.data() as { progress: string };
 };

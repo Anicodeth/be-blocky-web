@@ -57,9 +57,7 @@ export const addChildSchema = z
 
 export const editChildSchema = z.object({
   name: z.string({ required_error: "Please provide valid name" }),
-  email: z
-    .string({ required_error: "Please provide valid email address!" })
-    .email("Please provide valid email address!"),
+  username: z.string(),
   classroom: z.string(),
 });
 
