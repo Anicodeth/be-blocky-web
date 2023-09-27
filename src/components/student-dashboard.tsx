@@ -15,7 +15,7 @@ export function StudentDashboard({ courses }: { courses: Course[] }) {
                 <p className=" text-sm">
                     Course you're enrolled to
                 </p>
-                <div className="md:flex items-start gap-2">
+                <div className="md:flex-row flex flex-col items-start gap-4">
                     {courses.map(course => (
                         <CourseCard course={course} progress />
                     ))}

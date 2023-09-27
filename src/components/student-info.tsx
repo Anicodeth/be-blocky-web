@@ -49,7 +49,7 @@ export const StudentInfo = ({ user }: { user: { displayName?: string } & { class
                     </div>
                     <div className=" flex flex-col justify-between">
                         <p className="font-bold ">
-                            {courses.find(c => c._id.toString() === user.classroom.courses[0])?.courseTitle}
+                            {courses.find(c => c._id.toString() === user.classroom?.courses[0])?.courseTitle ?? "-"}
                         </p>
                         <span className=" text-xs py-1">
                             8 Members
@@ -78,7 +78,7 @@ export const StudentInfo = ({ user }: { user: { displayName?: string } & { class
                             </span>
                         </div>
                         <p className="font-bold text-lg">
-                            Class - {user.classroom.name}
+                            Class - {user.classroom?.name ?? "A"}
                         </p>
                         <span className=" text-xs py-1">
                             8 Members

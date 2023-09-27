@@ -9,8 +9,10 @@ export function CourseCard({ course, progress }: { course: Course, progress?: bo
     return (
         <Card className="text-dark-ebony md:w-1/4">
             <CardHeader>
-                <div className="flex flex-row justify-center gap-2 shadow-sm border border-ecstasy py-2 rounded-md">
+                <div className="flex flex-row justify-center gap-2 shadow-sm py-2 rounded-md">
                     <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">{course.courseLanguage}</Badge>
+                    <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">Css</Badge>
+                    <Badge variant="secondary" className="rounded-xl text-dark-ebony bg-gray-200">JS</Badge>
                 </div>
             </CardHeader>
             <CardContent>
